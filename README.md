@@ -1,7 +1,8 @@
 # SwaGGed
 [Software Engineering Project ] Blooging Platform
 
-1. Introduction
+Introduction
+
 SwaGGed is a blogging platform dedicated to fans of
 rap music, from new fans to veterans of hip-hop culture. The site offers
 rich content, including articles on emerging artists, album reviews,
@@ -12,7 +13,8 @@ of an authoritative and interactive source where the rap community can meet,
 discuss and grow, offering a space to share opinions,
 exchange ideas and promote creativity.
 
-2. Objectives
+Objectives
+
 To position itself uniquely from competitors, SwaGGed will analyze
 the following rap music blogging platforms:
 
@@ -34,8 +36,8 @@ HotNewHipHop, but also more in-depth and personalized content in
 Rap Radar style. Furthermore, SwaGGed aims to offer a more experience
 interactive, allowing users to comment and appreciate.
 
+Main Features
 
-4. Main Features
 Features for Unregistered User:
 
  Reading articles and reviews: All users, even without
