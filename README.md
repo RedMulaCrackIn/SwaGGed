@@ -36,39 +36,37 @@ HotNewHipHop, but also more in-depth and personalized content in
 Rap Radar style. Furthermore, SwaGGed aims to provide a highly
 interactive experience, enabling users to comment, discuss, and engage actively.
 
-# Main Features
+## Main Features
 
-## Features for Unregistered User:
+### Guest (Unregistered Users)
 
- Reading articles and reviews: All users, even without
-registration, they can access the main contents of the site such as
-articles, album reviews, event news and interviews.
+- **Reading Articles and Reviews**: Guests can access the main content, including articles, album reviews, event news, and interviews.
+  
+- **Browsing Categories and Artists**: Guests can explore the platform through categories or by searching for specific artists.
+  
+- **Viewing Discussions**: Guests can view comments and discussions under articles but cannot participate or interact.
 
- Navigation between categories and artists: Ability to explore the
-platform through categories, artists.
-Functionality for Registered User.
+### Registered User
 
- Creating and publishing content: Users can write
-articles.
+- **Creating and Publishing Content**: Registered users can create and publish their own articles, sharing their thoughts and opinions with the community.
 
- Comments and interaction: Registered users can comment
-articles, start discussions.
+- **Commenting and Discussions**: Registered users can comment on articles, reply to other users, and engage in discussions.
 
- Liking: Registered users can leave a like on posts that
-they liked it.
+- **Liking and Disliking**: Registered users can like or dislike posts and comments to express their approval or disagreement.
 
- Saving articles: Ability to save articles for reading
-next.
+- **Saving Articles**: Registered users can save articles and posts for later reading.
 
-## Features for Administrators:
+- **Creating Subcategories/Communities**: Users can propose or create subcategories or community spaces based on specific topics or themes within the rap culture.
 
- Management of comments and discussions: Editors can moderate i
-comments and manage discussions between users, maintaining an environment
-constructive and respectful.
+### Administrator
 
- User Management: Complete function to manage registered users.
+- **Comment and Discussion Moderation**: Administrators can moderate comments, ensuring discussions remain constructive and respectful. They can remove inappropriate content or users as needed.
 
- Content Management: Control over all publications.
+- **User Management**: Administrators have full control over registered users, including the ability to block or ban users violating the platform's guidelines.
+
+- **Content Management**: Administrators oversee all content published on the platform, with the ability to edit, approve, or remove articles and posts.
+
+- **Subcategory/Community Moderation**: Administrators can approve or manage the creation of subcategories and monitor the activities within these communities.
 
 
 
