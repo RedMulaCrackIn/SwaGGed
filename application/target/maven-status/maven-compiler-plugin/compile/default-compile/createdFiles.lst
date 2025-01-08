@@ -1,1 +1,15 @@
-org\example\application\HelloServlet.class
+swagged\gestionecommunity\services\GestioneCommunityServiceImpl.class
+swagged\gestionecommenti\services\GestioneCommentiService.class
+swagged\gestioneutenti\controller\LogoutServlet.class
+swagged\gestionepost\services\GestionePostService.class
+swagged\gestioneutenti\controller\RegistrazioneServlet.class
+swagged\gestionepost\controller\PostServlet.class
+swagged\gestionecommunity\controller\CommunityServlet.class
+swagged\gestionecommunity\services\GestioneCommunityService.class
+swagged\gestionecommenti\services\GestioneCommentiServiceImpl.class
+swagged\gestionecommenti\controller\CommentoServlet.class
+swagged\gestioneutenti\controller\LoginServlet.class
+swagged\gestioneutenti\controller\UtenteServlet.class
+swagged\model\bean\CommentoBean.class
+swagged\gestionepost\services\GestionePostServiceImpl.class
+swagged\model\bean\Bean.class
