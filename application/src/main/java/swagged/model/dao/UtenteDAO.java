@@ -41,4 +41,28 @@ public class UtenteDAO {
         return result != 0;
     }
 
+    public synchronized boolean delete(String key) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        int result = 0;
+
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE email = ?";
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+            statement.setString(1, key);
+
+            result = statement.executeUpdate();
+        } finally {
+            try {
+                if(statement != null) {
+                    statement.close();
+                }
+            } finally {
+                DriverManagerConnectionPool.releaseConnection(con);
+            }
+        }
+        return result != 0;
+    }
+
 }
