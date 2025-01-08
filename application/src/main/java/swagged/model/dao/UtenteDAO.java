@@ -209,4 +209,42 @@ public class UtenteDAO {
         return utente;
     }
 
+    public synchronized List<UtenteBean> getByUsernameSubstring(String substring) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        List<UtenteBean> utenti = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE username LIKE ?;";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+
+            // Aggiungi i caratteri jolly per la ricerca parziale
+            statement.setString(1, "%" + substring + "%");
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                UtenteBean utente = new UtenteBean();
+                utente.setEmail(result.getString("email"));
+                utente.setUsername(result.getString("username"));
+                utente.setPassword(result.getString("password"));
+                utente.setImmagine(result.getString("immagine"));
+                utente.setBandito(result.getBoolean("bandito"));
+                utente.setAdmin(result.getBoolean("admin"));
+                utenti.add(utente);
+            }
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } finally {
+                DriverManagerConnectionPool.releaseConnection(con);
+            }
+        }
+
+        return utenti;
+    }
 }
