@@ -5,7 +5,10 @@ import swagged.utils.DriverManagerConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UtenteDAO {
     private static final String TABLE_NAME = "utente";
@@ -96,6 +99,43 @@ public class UtenteDAO {
             }
         }
         return result != 0;
+    }
+
+    public synchronized List<UtenteBean> getAll() throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+
+        List<UtenteBean> utenti = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_NAME;
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                UtenteBean utente = new UtenteBean();
+
+                utente.setEmail(result.getString("email"));
+                utente.setUsername(result.getString("username"));
+                utente.setPassword(result.getString("password"));
+                utente.setImmagine(result.getString("immagine"));
+                utente.setBandito(result.getBoolean("bandito"));
+                utente.setAdmin(result.getBoolean("admin"));
+
+                utenti.add(utente);
+            }
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } finally {
+                DriverManagerConnectionPool.releaseConnection(con);
+            }
+        }
+        return utenti;
     }
 
 }
