@@ -173,4 +173,40 @@ public class UtenteDAO {
         return utente;
     }
 
+    public synchronized UtenteBean getByUsername(String username) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        UtenteBean utente = null;
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE username = ?";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+            statement.setString(1, username);
+
+            ResultSet result = statement.executeQuery();
+
+            if(result.next()) {
+                utente = new UtenteBean();
+                utente.setEmail(result.getString("email"));
+                utente.setUsername(result.getString("username"));
+                utente.setPassword(result.getString("password"));
+                utente.setImmagine(result.getString("immagine"));
+                utente.setBandito(result.getBoolean("bandito"));
+                utente.setAdmin(result.getBoolean("admin"));
+            }
+        } finally {
+            try {
+                if(statement != null) {
+                    statement.close();
+                }
+            } finally {
+                DriverManagerConnectionPool.releaseConnection(con);
+            }
+        }
+
+        return utente;
+    }
+
 }
