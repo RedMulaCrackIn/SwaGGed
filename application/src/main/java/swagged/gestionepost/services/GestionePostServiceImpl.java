@@ -85,8 +85,18 @@ public class GestionePostServiceImpl implements GestionePostService {
 
     @Override
     public boolean remove(int id, UtenteBean utente) throws SQLException {
-        return false;
+        if(postDAO.getById(id) == null)
+            return false;
+
+        PostBean post = postDAO.getById(id);
+        utente.remove("postCreati", post);
+
+        CommunityBean community = communityDAO.getByNome(post.getCommunityNome());
+        community.removePost(post);
+
+        return postDAO.delete(id);
     }
+
 
     @Override
     public List<PostBean> cerca(String substring) throws SQLException {
