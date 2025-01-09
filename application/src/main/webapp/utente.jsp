@@ -91,3 +91,40 @@
                                             </li>
                                         </ul>
                                     </div>
+                                        <%
+                                        if (utente != null && utente.isAdmin()) {
+                                    %>
+                                    <div class="card-post-toolbar">
+                                        <button type="button" class="btn bg-danger" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal-ban">
+                                            Ban
+                                        </button>
+                                    </div>
+                                    <div class="modal fade" id="exampleModal-ban" tabindex="-1"
+                                         aria-labelledby="exampleModalLabel" style="display: none;"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel-ban">Confermare
+                                                        ban?</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close">
+                                                    </button>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Annulla
+                                                    </button>
+                                                    <a href="<%=request.getContextPath()%>/utente?mode=ban&utenteEmail=<%=profilo.getEmail()%>">
+                                                        <button type="button" class="btn btn-primary">Conferma
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%
+                                        }
+                                    %>
+
