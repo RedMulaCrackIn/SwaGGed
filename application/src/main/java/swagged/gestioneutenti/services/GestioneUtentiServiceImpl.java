@@ -99,6 +99,12 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
         UtenteBean utente = utenteDAO.getByUsername(username);
         return utente != null;
     }
+
+    private boolean isImageFile(Part filePart) {
+        String contentType = filePart.getContentType();
+        return contentType != null && (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/gif") || contentType.equals("image/jpg"));
+    }
+
 }
 
 
