@@ -1,16 +1,14 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: matti
-  Date: 09/01/2025
-  Time: 12:48
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@ page import="swagged.model.dao.PostDAO" %>
+<%@ page import="swagged.model.dao.CommunityDAO" %>
+<%@ page import="swagged.model.dao.UtenteDAO" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="swagged.model.bean.*" %>
+<%
+    UtenteBean utente = (UtenteBean) session.getAttribute("utente");
+    List<Bean> risultati = (List<Bean>) request.getSession().getAttribute("risultati");
 
-</body>
-</html>
+    UtenteDAO utenteDAO = new UtenteDAO();
+    UtenteBean utenteBean = null;
+
+%>
