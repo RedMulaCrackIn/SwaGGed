@@ -64,6 +64,9 @@ public class GestioneCommentiServiceImpl implements GestioneCommentiService{
 
     @Override
     public List<CommentoBean> visualizza(int postId) throws SQLException {
-        return List.of();
+        if(postDAO.getById(postId) == null)
+            return null;
+
+        return commentoDAO.getByPostId(postId);
     }
 }
