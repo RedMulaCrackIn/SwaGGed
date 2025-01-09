@@ -323,3 +323,26 @@
         </div>
     </div>
 </div>
+<!-- Wrapper End-->
+<%
+    }
+%>
+<script src="<%=request.getContextPath()%>/assets/js/libs.min.js"></script>
+<!-- slider JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/slider.js"></script>
+<!-- masonry JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/masonry.pkgd.min.js"></script>
+<!-- SweetAlert JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/enchanter.js"></script>
+<!-- SweetAlert JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/sweetalert.js"></script>
+<!-- app JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/charts/weather-chart.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/app.js"></script>
+<script src="<%=request.getContextPath()%>/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/lottie.js"></script>
+
+<script src="<%=request.getContextPath()%>/assets/js/validazioneCommunity.js"></script>
+
+</body>
+</html>
