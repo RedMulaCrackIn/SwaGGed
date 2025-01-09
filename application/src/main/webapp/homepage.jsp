@@ -328,3 +328,28 @@
             </div>
         </div>
 </div>
+<!-- Wrapper End-->
+<!-- Backend Bundle JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/libs.min.js"></script>
+<!-- Slider JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/slider.js"></script>
+<!-- Masonry JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/masonry.pkgd.min.js"></script>
+<!-- SweetAlert JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/enchanter.js"></script>
+<!-- SweetAlert JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/sweetalert.js"></script>
+<!-- Weather Chart JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/charts/weather-chart.js"></script>
+<!-- App JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/app.js"></script>
+<script src="<%=request.getContextPath()%>/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/lottie.js"></script>
+
+<script src="<%=request.getContextPath()%>/assets/js/validazionePost.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/validazioneCommunity.js"></script>
+
+
+
+</body>
+</html>
