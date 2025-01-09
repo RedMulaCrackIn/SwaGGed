@@ -5,7 +5,10 @@ import swagged.utils.DriverManagerConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PostDAO {
     private static final String TABLE_NAME = "post";
@@ -96,6 +99,71 @@ public class PostDAO {
         }
 
         return result != 0;
+    }
+
+    public synchronized PostBean getById(int id) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        PostBean post = new PostBean();
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+            statement.setInt(1, id);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                post.setId(result.getInt("id"));
+                post.setTitolo(result.getString("titolo"));
+                post.setCorpo(result.getString("corpo"));
+                post.setImmagine(result.getString("immagine"));
+                post.setLikes(result.getInt("likes")); // Retrieve likes after segnalazioni
+                post.setDataCreazione(result.getDate("dataCreazione"));
+                post.setNumeroCommenti(result.getInt("numeroCommenti"));
+                post.setUtenteEmail(result.getString("utenteEmail"));
+                post.setCommunityNome(result.getString("communityNome"));
+            }
+        } finally {
+            if (statement != null) statement.close();
+            DriverManagerConnectionPool.releaseConnection(con);
+        }
+        return post;
+    }
+
+    public synchronized List<PostBean> getAll() throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        List<PostBean> posts = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_NAME;
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                PostBean post = new PostBean();
+                post.setId(result.getInt("id"));
+                post.setTitolo(result.getString("titolo"));
+                post.setCorpo(result.getString("corpo"));
+                post.setImmagine(result.getString("immagine"));
+                post.setLikes(result.getInt("likes")); // Include likes after segnalazioni
+                post.setDataCreazione(result.getDate("dataCreazione"));
+                post.setNumeroCommenti(result.getInt("numeroCommenti"));
+                post.setUtenteEmail(result.getString("utenteEmail"));
+                post.setCommunityNome(result.getString("communityNome"));
+                posts.add(post);
+            }
+        } finally {
+            if (statement != null) statement.close();
+            DriverManagerConnectionPool.releaseConnection(con);
+        }
+        return posts;
     }
 
 
