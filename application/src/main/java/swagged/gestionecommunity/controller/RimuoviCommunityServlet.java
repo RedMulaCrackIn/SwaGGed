@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @WebServlet("/rimuoviCommunity")
-public class RimuoviCommunityServlet extends HttpServlet {
+public class RimuoviCommunityServlet extends HttpServlet
+{
+
     private static final long serialVersionUID = 1L;
     private static final GestioneCommunityService gestioneCommunity = new GestioneCommunityServiceImpl();
 
