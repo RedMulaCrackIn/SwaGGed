@@ -1,8 +1,10 @@
 <%@ page import="swagged.model.bean.UtenteBean" %>
-<%@ page import="java.net.URLEncoder" %>
+<%@ page import="swagged.model.bean.IscrivitiCommunityBean" %>
+<%@ page import="java.util.List" %>
+<%@ page import="swagged.model.bean.CommunityBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    UtenteBean utente = (UtenteBean) session.getAttribute("utente");
+    UtenteBean utenteBean = (UtenteBean) session.getAttribute("utente");
 %>
 <html>
 <head>
@@ -21,107 +23,81 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/vendor/font-awesome-line-awesome/css/all.min.css">
     <link rel="stylesheet"
           href="<%=request.getContextPath()%>/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
-    <style>
-        button.btn-link {
-            background: none; /* Rimuove lo sfondo */
-            border: none; /* Rimuove il bordo */
-            padding: 0; /* Rimuove il padding, se presente */
-            cursor: pointer; /* Aggiunge il cursore tipo mano quando si passa sopra */
-        }
-    </style>
 </head>
 <body>
+<%
+    if (utenteBean != null) {
+%>
+<div class="iq-sidebar  sidebar-default ">
+    <div id="sidebar-scrollbar">
+        <br><br>
+        <nav class="iq-sidebar-menu">
+            <ul id="iq-sidebar-toggle" class="iq-menu">
+                <li class="">
+                    <a>
+                        <form class="post-text ms-3 w-100 " data-bs-toggle="modal"
+                              data-bs-target="#post-modal-community"
+                              action="javascript:void();">
+                            <button type="submit" class="btn btn-primary mb-2" data-bs-target="#post-modal">Crea Community</button>
+                        </form>
 
-<div class="iq-top-navbar">
-    <div class="iq-navbar-custom">
-        <nav class="navbar navbar-expand-lg navbar-light p-0">
-            <div class="iq-navbar-logo d-flex justify-content-between">
-                <a href="<%=request.getContextPath()%>/homepage.jsp">
-                    <img src="<%=request.getContextPath()%>/assets/images/logo.png" class="img-fluid" alt="">
-                    <span>SwaGGed</span>
-                </a>
+                    </a>
+                </li>
+                <li class="">
+                    <a>
+                        <h5>Community Create</h5>
+                    </a>
+                </li>
                 <%
-                    if (utente != null) {
+                    if (session.getAttribute("utente") != null) {
+                        UtenteBean utente = (UtenteBean) session.getAttribute("utente");
+                        List<CommunityBean> communityCreate = (List<CommunityBean>) utente.get("communityCreate");
+                        for (CommunityBean community : communityCreate) {
                 %>
-                <div class="iq-menu-bt align-self-center">
-                    <div class="wrapper-menu">
-                        <div class="main-circle"><i class="ri-menu-line"></i></div>
-                    </div>
-                </div>
+                <li class="">
+                    <a href="<%=request.getContextPath()%>/visualizzaCommunity?nome=<%= community.getNome() %>"
+                       class=" ">
+                        <span><%= community.getNome() %></span>
+                    </a>
+                </li>
                 <%
+                        }
+                    } else {
                     }
                 %>
-            </div>
-            <div class="iq-search-bar device-search">
-                <form action="<%=request.getContextPath() + "/homepage.jsp"%>" class="searchbox" method="get">
-                    <button class="btn-link search-link" href="" type="submit"><i class="ri-search-line"></i></button>
-                    <input type="text" class="text search-input" placeholder="Cerca contenuti" name="query">
-                    <select class="form-select form-select-sm mb-3" name="type">
-                        <option selected="" value="post">Post</option>
-                        <option value="utente">Utente</option>
-                        <option value="community">Community</option>
-                    </select>
-                </form>
-            </div>
-            <%
-                if (utente != null) {
-            %>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav  ms-auto navbar-list">
-                    <li class="nav-item dropdown">
-                        <a href="#" class="   d-flex align-items-center dropdown-toggle" id="drop-down-arrow"
-                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="<%=request.getContextPath() + "/assets/images/pfp/" + utente.getImmagine()%>"
-                                 class="img-fluid rounded-circle me-3" alt="user">
-                            <div class="caption">
-                                <h6 class="mb-0 line-height"><%=utente.getUsername()%>
-                                </h6>
-                            </div>
-                        </a>
-                        <div class="sub-drop dropdown-menu caption-menu" aria-labelledby="drop-down-arrow">
-                            <div class="card shadow-none m-0">
-                                <div class="card-header  bg-primary">
-                                    <div class="header-title">
-                                        <h5 class="mb-0 text-white">Ciao <%=utente.getUsername()%>
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="card-body p-0 ">
-                                    <a href="<%=request.getContextPath()%>/utente?mode=visualizza&username=<%=utente.getUsername()%>"
-                                       class="iq-sub-card iq-bg-primary-hover">
-                                        <div class="d-flex align-items-center">
-                                            <div class="rounded card-icon bg-soft-primary">
-                                                <i class="ri-file-user-line"></i>
-                                            </div>
-                                            <div class="ms-3">
-                                                <h6 class="mb-0 ">Profilo</h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <div class="d-inline-block w-100 text-center p-3">
-                                        <a class="btn btn-primary iq-sign-btn"
-                                           href="<%=request.getContextPath()%>/logout" role="button">Logout<i
-                                                class="ri-login-box-line ms-2"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <%
-            } else {
-            %>
-            <div class="   d-flex align-items-center">
-                <a class="btn btn-primary iq-sign-btn" href="<%=request.getContextPath()%>/login.jsp" role="button">Accedi<i
-                        class="ri-login-box-line ms-2"></i></a>
-            </div>
-            <%
-                }
-            %>
+
+                <li class="">
+                    <a>
+                        <h5>Iscrizioni</h5>
+                    </a>
+                </li>
+                <%
+                    if (session.getAttribute("utente") != null) {
+                        UtenteBean utente = (UtenteBean) session.getAttribute("utente");
+                        List<IscrivitiCommunityBean> communityIscritto = (List<IscrivitiCommunityBean>) utente.get("communityIscritto");
+                        for (IscrivitiCommunityBean community : communityIscritto) {
+                %>
+                <li class="">
+                    <a href="<%=request.getContextPath()%>/visualizzaCommunity?nome=<%= community.getCommunityNome() %>"
+                       class=" ">
+                        <span><%= community.getCommunityNome() %></span>
+                    </a>
+                </li>
+                <%
+                        }
+                    } else {
+                    }
+                %>
+            </ul>
+
         </nav>
+
+        <div class="p-5"></div>
     </div>
 </div>
+<%
+    }
+%>
 
 <script src="<%=request.getContextPath()%>/assets/js/libs.min.js"></script>
 <!-- Slider JavaScript -->
