@@ -99,4 +99,36 @@ public class IscrivitiCommunityDAO {
         return segueCommunity;
     }
 
+    public synchronized List<IscrivitiCommunityBean> getByEmail(String utenteEmail) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        List<IscrivitiCommunityBean> segueCommunities = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE utenteEmail = ?";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+
+            statement.setString(1, utenteEmail);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                IscrivitiCommunityBean segueCommunity = new IscrivitiCommunityBean();
+                segueCommunity.setUtenteEmail(resultSet.getString("utenteEmail"));
+                segueCommunity.setCommunityNome(resultSet.getString("communityNome"));
+
+                segueCommunities.add(segueCommunity);
+            }
+        } finally {
+            try {
+                if (statement != null)
+                    statement.close();
+            } finally {
+                DriverManagerConnectionPool.releaseConnection(con);
+            }
+        }
+        return segueCommunities;
+    }
 }
