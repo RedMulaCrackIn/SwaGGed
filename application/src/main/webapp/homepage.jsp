@@ -195,3 +195,28 @@
                             for (PostBean post : posts) {
                                 utenteBean = utenteDAO.getByEmail(post.getUtenteEmail());
                         %>
+                        <div class="col-sm-12">
+                            <div class="card card-block card-stretch card-height">
+                                <div class="card-body">
+                                    <div class="user-post-data py-3">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="me-3">
+                                                <img class="avatar-60 rounded-circle"
+                                                     src="<%=request.getContextPath() + "/assets/images/pfp/" + utenteBean.getImmagine()%>"
+                                                     alt="">
+                                            </div>
+                                            <div class="w-100">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="">
+                                                        <h5 class="mb-0 d-inline-block">
+                                                            <a href="<%=request.getContextPath()%>/utente?mode=visualizza&username=<%=utenteBean.getUsername()%>"
+                                                               class=""><%=utenteBean.getUsername()%>
+                                                            </a>
+                                                        </h5>
+                                                        <a href="<%=request.getContextPath()%>/community?mode=visualizza&nome=<%=post.getCommunityNome()%>">
+                                                            <p class="mb-0"><%=post.getCommunityNome()%>
+                                                            </p>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
