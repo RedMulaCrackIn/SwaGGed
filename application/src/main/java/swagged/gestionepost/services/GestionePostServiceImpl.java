@@ -100,8 +100,12 @@ public class GestionePostServiceImpl implements GestionePostService {
 
     @Override
     public List<PostBean> cerca(String substring) throws SQLException {
-        return List.of();
+        if(substring.isEmpty())
+            return null;
+
+        return postDAO.getByTitleSubstring(substring);
     }
+
 
     @Override
     public PostBean like(UtenteBean utente, int postId) throws SQLException {
