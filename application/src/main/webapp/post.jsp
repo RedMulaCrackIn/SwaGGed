@@ -26,3 +26,52 @@
     <link rel="stylesheet"
           href="<%=request.getContextPath()%>/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
 </head>
+<body class="  ">
+<!-- loader Start -->
+<div id="loading">
+    <div id="loading-center">
+    </div>
+</div>
+<!-- loader END -->
+<!-- Wrapper Start -->
+<div class="wrapper">
+    <jsp:include page="fragments/sidebar.jsp"/>
+    <jsp:include page="fragments/navbar.jsp"/>
+    <div id="content-page" class="content-page">
+        <div class="container">
+            <div class="row row-eq-height">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="card iq-border-radius-20">
+
+
+                                <div class="card-body">
+                                    <div class="user-post-data py-3">
+                                        <div class="d-flex justify-content-between">
+                                                <%
+                                                UtenteDAO utenteDAO = new UtenteDAO();
+                                                UtenteBean utenteBean = new UtenteBean();
+                                                utenteBean = utenteDAO.getByEmail(post.getUtenteEmail());
+                                            %>
+                                            <div class=" me-3">
+                                                <img src="<%=request.getContextPath() + "/assets/images/pfp/" + utenteBean.getImmagine()%>"
+                                                     alt="" class="avatar-60 rounded-circle">
+                                            </div>
+                                            <div class="w-100">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="">
+                                                        <h5 class="mb-0 d-inline-block">
+                                                            <a href="<%=request.getContextPath()%>/utente?mode=visualizza&username=<%=utenteBean.getUsername()%>"
+                                                               class="">
+                                                                <%=utenteBean.getUsername()%>
+                                                            </a>
+                                                        </h5>
+                                                        <a href="<%=request.getContextPath()%>/community?mode=visualizza&nome=<%=post.getCommunityNome()%>">
+                                                            <p class="mb-0"><%=post.getCommunityNome()%>
+                                                            </p>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
