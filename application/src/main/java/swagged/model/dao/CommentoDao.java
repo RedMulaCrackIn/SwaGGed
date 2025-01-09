@@ -112,5 +112,30 @@ public class CommentoDao {
         return comments;
     }
 
+    public synchronized CommentoBean getById(int id) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        CommentoBean commento = new CommentoBean();
 
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+            statement.setInt(1, id);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                commento.setId(result.getInt("id"));
+                commento.setCorpo(result.getString("corpo"));
+                commento.setUtenteEmail(result.getString("utenteEmail"));
+                commento.setPostId(result.getInt("postId"));
+            }
+        } finally {
+            if (statement != null) statement.close();
+            DriverManagerConnectionPool.releaseConnection(con);
+        }
+        return commento;
+    }
 }
