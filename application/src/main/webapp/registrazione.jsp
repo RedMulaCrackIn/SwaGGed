@@ -15,3 +15,65 @@
   <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
 
 </head>
+<body class=" ">
+<!-- loader Start -->
+<div id="loading">
+  <div id="loading-center">
+  </div>
+</div>
+<!-- loader END -->
+
+<div class="wrapper">
+  <section class="sign-in-page">
+    <div id="container-inside">
+      <div id="circle-small"></div>
+      <div id="circle-medium"></div>
+      <div id="circle-large"></div>
+      <div id="circle-xlarge"></div>
+      <div id="circle-xxlarge"></div>
+    </div>
+    <div class="container p-0">
+      <div class="row no-gutters">
+        <div class="col-md-6 text-center pt-5">
+          <div class="sign-in-detail text-white">
+            <a class="sign-in-logo mb-5" href="<%=request.getContextPath()%>/homepage.jsp"><img src="<%=request.getContextPath()%>/assets/images/logo-full.png" class="img-fluid" alt="logo"></a>
+          </div>
+        </div>
+        <div class="col-md-6 bg-white pt-5 pt-5 pb-lg-0 pb-5">
+          <div class="sign-in-from">
+            <h1 class="mb-0">Registrati</h1>
+            <form class="mt-4" action="registrazione" method="post">
+              <input type="hidden" name="mode" value="register">
+              <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" class="form-control mb-0" id="email" name="email" placeholder="Inserisci email">
+                <p class="invalid-feedback" id="error-email"></p>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <input type="text" class="form-control mb-0" id="username" name="username" placeholder="Inserisci username">
+                <p class="invalid-feedback" id="error-username"></p>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" class="form-control mb-0" id="password" name="password" placeholder="Password">
+                <p class="invalid-feedback" id="error-pwd"></p>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="passwordCheck">Ripeti password</label>
+                <input type="password" class="form-control mb-0" id="passwordCheck" name="passwordCheck" placeholder="Ripeti password">
+                <p class="invalid-feedback" id="error-pwdchk"></p>
+              </div>
+              <div class="d-inline-block w-100">
+                <button type="submit" class="btn btn-primary float-end">Registrati</button>
+              </div>
+              <div class="sign-info">
+                <span class="dark-color d-inline-block line-height-2">Hai gi&agrave; un account? <a href="<%=request.getContextPath()%>/login.jsp">Accedi</a></span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
