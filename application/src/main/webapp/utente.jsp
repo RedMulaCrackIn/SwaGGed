@@ -6,7 +6,6 @@
     UtenteBean utente = (UtenteBean) session.getAttribute("utente");
     List<PostBean> posts = (List<PostBean>) profilo.get("postCreati");
 %>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -33,7 +32,7 @@
     <div id="loading-center">
     </div>
 </div>
-    <%
+<%
     if (profilo.isBandito()) {
 %>
 <div class="wrapper">
@@ -49,10 +48,11 @@
         </div>
     </div>
 </div>
-    <%
+<%
 } else {
 %>
 <!-- loader Start -->
+
 <!-- loader END -->
 <!-- Wrapper Start -->
 <div class="wrapper">
@@ -91,7 +91,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                        <%
+                                    <%
                                         if (utente != null && utente.isAdmin()) {
                                     %>
                                     <div class="card-post-toolbar">
@@ -176,7 +176,7 @@
                                 <div class="row">
 
 
-                                        <%
+                                    <%
                                         for (PostBean post : posts) {
 
                                     %>
@@ -205,7 +205,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                            <%
+                                                        <%
                                                             if (utente != null && (post.getUtenteEmail().equals(utente.getEmail()) || utente.isAdmin())) {
                                                         %>
 
@@ -241,14 +241,14 @@
                                                     <h4 class="card-title"><%=post.getTitolo()%>
                                                     </h4>
                                                 </div>
-                                                    <%
+                                                <%
                                                     if (post.getCorpo().length() > 0) {
                                                 %>
                                                 <div class="user-post">
                                                     <p><%=post.getCorpo()%>
                                                     </p>
                                                 </div>
-                                                    <%
+                                                <%
                                                     }
                                                     if (post.getImmagine() != null && !post.getImmagine().isEmpty()) {
                                                 %>
