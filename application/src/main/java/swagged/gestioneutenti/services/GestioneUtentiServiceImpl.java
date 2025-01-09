@@ -19,8 +19,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
-public class GestioneUtentiServiceImpl implements GestioneUtentiService
-{
+public class GestioneUtentiServiceImpl implements GestioneUtentiService {
     private UtenteDAO utenteDAO = new UtenteDAO();
     private static final String UPLOAD_DIR = "assets/images/pfp";
 
@@ -91,4 +90,15 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService
         UtenteBean utente = utenteDAO.getByEmail(email);
         return utente != null;
     }
+
+    @Override
+    public boolean checkUsername(String username) throws SQLException {
+        if (username == null || username.isEmpty())
+            return false;
+
+        UtenteBean utente = utenteDAO.getByUsername(username);
+        return utente != null;
+    }
 }
+
+
