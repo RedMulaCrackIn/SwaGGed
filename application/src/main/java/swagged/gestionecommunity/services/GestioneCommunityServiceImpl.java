@@ -59,5 +59,18 @@ public class GestioneCommunityServiceImpl implements GestioneCommunityService {
         return communityDAO.delete(community.getNome());
     }
 
+    @Override
+    public CommunityBean visualizza(String nome) throws SQLException {
+        if(nome == null || nome.isEmpty() || communityDAO.getByNome(nome) == null)
+            return null;
+        List<PostBean> post = postDAO.getByCommunityNome(nome);
+        CommunityBean communityBean = communityDAO.getByNome(nome);
+
+        post.sort(Comparator.comparing(PostBean::getDataCreazione));
+
+        communityBean.setPost(post);
+        return communityBean;
+    }
+
 
 }
