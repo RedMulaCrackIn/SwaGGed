@@ -2,6 +2,7 @@ package swagged.gestionepost.services;
 
 import jakarta.servlet.GenericServlet;
 import jakarta.servlet.http.Part;
+import swagged.model.bean.ApprezzaPostBean;
 import swagged.model.bean.CommunityBean;
 import swagged.model.bean.PostBean;
 import swagged.model.bean.UtenteBean;
@@ -109,8 +110,39 @@ public class GestionePostServiceImpl implements GestionePostService {
 
     @Override
     public PostBean like(UtenteBean utente, int postId) throws SQLException {
-        return null;
+        if(utente == null || postDAO.getById(postId) == null)
+            return null;
+
+        ApprezzaPostBean apprezzaPostBean = new ApprezzaPostBean();
+
+        if((apprezzaPostDAO.getByKey(utente.getEmail(), postId) == null)){
+            apprezzaPostBean.setUtenteEmail(utente.getEmail());
+            apprezzaPostBean.setPostId(postId);
+            apprezzaPostDAO.save(apprezzaPostBean);
+
+            PostBean postBean = postDAO.getById(postId);
+            postBean.aggiungiLike();
+
+            utente.add("postApprezzati", apprezzaPostBean);
+            if(postDAO.update(postBean))
+                return postBean;
+            else
+                return null;
+        } else {
+            apprezzaPostBean = apprezzaPostDAO.getByKey(utente.getEmail(), postId);
+            apprezzaPostDAO.delete(utente.getEmail(), postId);
+
+            PostBean postBean = postDAO.getById(postId);
+            postBean.rimuoviLike();
+            System.out.println("G: " + utente.get("postApprezzati"));
+            utente.remove("postApprezzati", apprezzaPostBean);
+            if(postDAO.update(postBean))
+                return postBean;
+            else
+                return null;
+        }
     }
+
 
     @Override
     public PostBean visualizza(int id) throws SQLException {
