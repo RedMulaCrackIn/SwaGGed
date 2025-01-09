@@ -234,5 +234,88 @@ public class PostDAO {
         return posts;
     }
 
+    public synchronized List<PostBean> getByTitleSubstring(String substring) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        List<PostBean> posts = new ArrayList<>();
+
+        // Use the SQL LIKE operator for substring matching
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE titolo LIKE ?;";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+
+            // Prepare the substring for the SQL query, adding wildcards for partial matches
+            statement.setString(1, "%" + substring + "%");
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                PostBean post = new PostBean();
+                post.setId(result.getInt("id"));
+                post.setTitolo(result.getString("titolo"));
+                post.setCorpo(result.getString("corpo"));
+                post.setImmagine(result.getString("immagine"));
+                post.setLikes(result.getInt("likes")); // Include likes after segnalazioni
+                post.setDataCreazione(result.getDate("dataCreazione"));
+                post.setNumeroCommenti(result.getInt("numeroCommenti"));
+                post.setUtenteEmail(result.getString("utenteEmail"));
+                post.setCommunityNome(result.getString("communityNome"));
+                posts.add(post);
+            }
+        } finally {
+            if (statement != null) statement.close();
+            DriverManagerConnectionPool.releaseConnection(con);
+        }
+        return posts;
+    }
+
+    public List<PostBean> getByDate() throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        List<PostBean> posts = new ArrayList<>();
+
+        // Query SQL per ottenere i post ordinati per data di creazione (dal più recente)
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY dataCreazione DESC";
+
+        try {
+            // Ottieni la connessione dal pool
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+
+            // Esegui la query
+            ResultSet result = statement.executeQuery();
+
+            // Mappa i risultati nel formato PostBean
+            while (result.next()) {
+                PostBean post = new PostBean();
+                post.setId(result.getInt("id"));
+                post.setTitolo(result.getString("titolo"));
+                post.setCorpo(result.getString("corpo"));
+                post.setImmagine(result.getString("immagine"));
+                post.setLikes(result.getInt("likes"));
+                post.setDataCreazione(result.getDate("dataCreazione"));
+                post.setNumeroCommenti(result.getInt("numeroCommenti"));
+                post.setUtenteEmail(result.getString("utenteEmail"));
+                post.setCommunityNome(result.getString("communityNome"));
+                posts.add(post);
+            }
+        } catch (SQLException e) {
+            // Logga l'errore per debug
+            e.printStackTrace();
+            throw e;
+        } finally {
+            // Chiudi lo statement e rilascia la connessione al pool
+            if (statement != null) {
+                statement.close();
+            }
+            if (con != null) {
+                DriverManagerConnectionPool.releaseConnection(con);
+            }
+        }
+
+        return posts;
+    }
 
 }
