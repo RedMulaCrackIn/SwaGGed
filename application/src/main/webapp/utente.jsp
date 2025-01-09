@@ -28,4 +28,29 @@
           href="<%=request.getContextPath()%>/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
 
 </head>
+<body class="  ">
+<div id="loading">
+    <div id="loading-center">
+    </div>
+</div>
+    <%
+    if (profilo.isBandito()) {
+%>
+<div class="wrapper">
+    <jsp:include page="fragments/sidebar.jsp"/>
+    <jsp:include page="fragments/navbar.jsp"/>
+    <div class="container p-0">
+        <div class="row no-gutters height-self-center">
+            <div class="col-sm-12 text-center align-self-center">
+                <div class="iq-error position-relative mt-5">
+                    <h2 class="mb-0 text-center">L'utente &egrave; stato bandito.</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <%
+} else {
+%>
+<!-- loader Start -->
 
