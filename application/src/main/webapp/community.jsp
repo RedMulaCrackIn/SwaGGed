@@ -353,5 +353,107 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="header-title">
+                                <h4 class="card-title">Informazioni</h4>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-inline p-0 m-0">
+                                <li class="mb-3">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="las la-user"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6>Creatore</h6>
+                                            <%
+                                                UtenteBean creatore = null;
+                                                try {
+                                                    creatore = utenteDAO.getByEmail(community.getUtenteEmail());
+                                                } catch (SQLException e) {
+                                                    throw new RuntimeException(e);
+                                                }
+                                            %>
+                                            <a href="<%=request.getContextPath()%>/utente?mode=visualizza&username=<%=creatore.getUsername()%>"
+                                               class=" ">
+                                                <p class="mb-0"><%=creatore.getUsername()%>
+                                                </p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-3">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="ri-pages-line"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6>Numero di post</h6>
+                                            <p class="mb-0"><%=community.getPost().size()%>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <%
+                                    if (utente != null && (community.getUtenteEmail().equals(utente.getEmail()) || utente.isAdmin())) {
+                                %>
+                                <li class="mb-3">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="ri-delete-bin-7-line h4"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+
+
+                                            <div class="card-post-toolbar">
+                                                <button type="button" class="btn bg-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal-community">
+                                                    Elimina
+                                                </button>
+                                            </div>
+                                            <div class="modal fade" id="exampleModal-community" tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel" style="display: none;"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel-community">
+                                                                Confermare eliminazione?</h5>
+                                                            <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close">
+
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Annulla
+                                                            </button>
+                                                            <a href="<%=request.getContextPath()%>/community?mode=remove&nome=<%=community.getNome()%>">
+                                                                <button type="button" class="btn btn-primary">Conferma
+                                                                </button>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </li>
+                                <%
+                                    }
+                                %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
