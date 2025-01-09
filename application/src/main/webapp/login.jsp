@@ -72,3 +72,26 @@
             </div>
         </div>
     </section>
+</div>
+
+<!-- Backend Bundle JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/libs.min.js"></script>
+<!-- Slider JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/slider.js"></script>
+<!-- Masonry JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/masonry.pkgd.min.js"></script>
+<!-- SweetAlert JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/enchanter.js"></script>
+<!-- SweetAlert JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/sweetalert.js"></script>
+<!-- Weather Chart JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/charts/weather-chart.js"></script>
+<!-- App JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/app.js"></script>
+<!-- Datepicker JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+<!-- Lottie JavaScript -->
+<script src="<%=request.getContextPath()%>/assets/js/lottie.js"></script>
+
+</body>
+</html>
