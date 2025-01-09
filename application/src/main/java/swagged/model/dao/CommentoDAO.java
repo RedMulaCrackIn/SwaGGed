@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-public class CommentoDao {
+public class CommentoDAO {
 
     private static final String TABLE_NAME = "commento";
 
