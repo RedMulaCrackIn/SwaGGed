@@ -73,3 +73,34 @@
         }
     }
 %>
+        <div id="content-page" class="content-page">
+            <div class="container">
+                <div class="row row-eq-height">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+
+
+                                <%
+                            if(utente != null){
+                        %>
+                            <div id="post-modal-data" class="card">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div class="header-title">
+                                        <h4 class="card-title">Crea Post</h4>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-img">
+                                            <img src="<%=request.getContextPath() + "/assets/images/pfp/" + utente.getImmagine()%>"
+                                                 alt="userimg"
+                                                 class="avatar-60 rounded-circle">
+                                        </div>
+                                        <form class="post-text ms-3 w-100 " data-bs-toggle="modal"
+                                              data-bs-target="#post-modal"
+                                              action="javascript:void();">
+                                            <input type="text" class="form-control rounded"
+                                                   placeholder="Scrivi qualcosa" style="border:none;">
+                                        </form>
+                                    </div>
+                                    <hr>
