@@ -82,4 +82,13 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService
 
         return utenteDAO.update(utente, utente.getEmail());
     }
+
+    @Override
+    public boolean checkEmail(String email) throws SQLException {
+        if (email == null || email.isEmpty())
+            return false;
+
+        UtenteBean utente = utenteDAO.getByEmail(email);
+        return utente != null;
+    }
 }
