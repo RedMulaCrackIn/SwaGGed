@@ -2,10 +2,7 @@ package swagged.gestionepost.services;
 
 import jakarta.servlet.GenericServlet;
 import jakarta.servlet.http.Part;
-import swagged.model.bean.ApprezzaPostBean;
-import swagged.model.bean.CommunityBean;
-import swagged.model.bean.PostBean;
-import swagged.model.bean.UtenteBean;
+import swagged.model.bean.*;
 import swagged.model.dao.*;
 
 import java.io.File;
@@ -145,8 +142,15 @@ public class GestionePostServiceImpl implements GestionePostService {
 
 
     @Override
-    public PostBean visualizza(int id) throws SQLException {
-        return null;
+    public PostBean visualizza(int id) throws SQLException{
+        if(postDAO.getById(id) == null)
+            return null;
+        List<CommentoBean> commenti = commentoDAO.getByPostId(id);
+
+        PostBean postBean = postDAO.getById(id);
+
+        postBean.setCommenti(commenti);
+        return postBean;
     }
 
     private boolean isImageFile(Part filePart) {
