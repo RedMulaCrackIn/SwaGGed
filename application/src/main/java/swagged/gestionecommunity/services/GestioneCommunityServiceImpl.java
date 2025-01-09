@@ -120,4 +120,11 @@ public class GestioneCommunityServiceImpl implements GestioneCommunityService
         return communityDAO.getByNameSubstring(substring);
     }
 
+    @Override
+    public boolean checkNome(String nome) throws SQLException {
+        if(nome == null || nome.isEmpty())
+            return false;
+        CommunityBean communityBean = communityDAO.getByNome(nome);
+        return communityBean != null;
+    }
 }
