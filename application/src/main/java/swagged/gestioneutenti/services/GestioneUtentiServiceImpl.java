@@ -36,4 +36,13 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService
         }
         return false;
     }
+
+    @Override
+    public List<UtenteBean> cerca(String substring) throws SQLException {
+        if (substring == null || substring.isEmpty())
+            return null;
+
+        List<UtenteBean> utentiCercati = utenteDAO.getByUsernameSubstring(substring);
+        return utentiCercati;
+    }
 }
