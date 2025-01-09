@@ -164,4 +164,31 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <%
+                                            }
+                                        %>
+                                    </div>
+                                </div>
+                                <div class="user-post">
+                                    <h4 class="card-title"><%=post.getTitolo()%>
+                                    </h4>
+                                </div>
+                                    <%
+                                    if (post.getCorpo().length() > 0) {
+                                %>
+                                <div class="user-post">
+                                    <p><%=post.getCorpo()%>
+                                    </p>
+                                </div>
+                                    <%
+                                    }
+                                    if (post.getImmagine() != null && !post.getImmagine().isEmpty()) {
+                                %>
+                                <div class="user-post">
+                                    <img src="<%=request.getContextPath() + "/assets/images/post/" + post.getImmagine()%>"
+                                         alt="post-image" class="img-fluid w-100"/>
+                                </div>
+                                    <%
+                                    }
+                                %>
 
