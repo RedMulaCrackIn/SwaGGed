@@ -305,5 +305,84 @@
                                     </div>
                                 </div>
                             </div>
+                    <%
+                        }
+                        }
+                    %>
+                    <%
+                        if (risultati.get(0) instanceof UtenteBean) {
+                        for (Bean bean : risultati) {
+                        utenteBean = (UtenteBean) bean;
+                    %>
+                    <div class="col-sm-12">
+                        <div class="card card-block card-stretch card-height">
+                            <div class="card-body">
+                                <div class="user-post-data py-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class=" me-3">
+                                            <img src="<%=request.getContextPath() + "/assets/images/pfp/" + utenteBean.getImmagine()%>"
+                                                 alt="" class="avatar-60 rounded-circle">
+                                        </div>
+                                        <div class="w-100">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="">
+                                                    <h5 class="mb-0 d-inline-block">
+                                                        <a href="<%=request.getContextPath()%>/utente?mode=visualizza&username=<%=utenteBean.getUsername()%>"
+                                                           class=""><%=utenteBean.getUsername()%>
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%
+                                            if (utente != null && (utente.isAdmin())) {
+                                        %>
+                                        <div class="card-post-toolbar">
+                                            <button type="button" class="btn bg-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#exampleModal-ban">
+                                                Ban
+                                            </button>
+                                        </div>
+                                        <div class="modal fade" id="exampleModal-ban" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" style="display: none;"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel-ban">Confermare
+                                                            ban?</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close">
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Annulla
+                                                        </button>
+                                                        <a href="<%=request.getContextPath()%>/utente?mode=ban&utenteEmail=<%=utenteBean.getEmail()%>">
+                                                            <button type="button" class="btn btn-primary">Conferma
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%
+                                            }
+                                        %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <%
+                        }
+                        }
+                    %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
