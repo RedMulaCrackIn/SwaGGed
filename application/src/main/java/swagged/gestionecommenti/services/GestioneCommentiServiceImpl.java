@@ -44,8 +44,23 @@ public class GestioneCommentiServiceImpl implements GestioneCommentiService{
 
     @Override
     public boolean remove(int id, int postId, UtenteBean utente) throws SQLException {
-        return false;
+        if(commentoDAO.getById(id) == null)
+            return false;
+
+        PostBean postBean = postDAO.getById(postId);
+        postBean.diminuisciNumeroCommenti();
+        postDAO.update(postBean);
+
+        CommentoBean commento = commentoDAO.getById(id);
+
+        PostBean post = postDAO.getById(id);
+        post.removeCommento(commento);
+
+        utente.remove("commentiCreati", commento);
+
+        return commentoDAO.delete(id);
     }
+
 
     @Override
     public List<CommentoBean> visualizza(int postId) throws SQLException {
