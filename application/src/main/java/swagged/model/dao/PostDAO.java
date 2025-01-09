@@ -59,5 +59,44 @@ public class PostDAO {
         return result != 0;
     }
 
+    public synchronized boolean update(PostBean bean) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        int result = 0;
+
+        String query = "UPDATE " + TABLE_NAME + " SET titolo = ?, corpo = ?, immagine = ?, likes = ?, dataCreazione = ?, numeroCommenti = ?, utenteEmail = ?, communityNome = ? WHERE id = ?";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+
+            // Set the parameters based on the PostBean object
+            statement.setString(1, bean.getTitolo());
+            statement.setString(2, bean.getCorpo());
+            statement.setString(3, bean.getImmagine());
+            statement.setInt(4, bean.getLikes());
+            statement.setDate(5, bean.getDataCreazione());
+            statement.setInt(6, bean.getNumeroCommenti());
+            statement.setString(7, bean.getUtenteEmail());
+            statement.setString(8, bean.getCommunityNome());
+            statement.setInt(9, bean.getId());
+
+            // Execute the update and capture the result
+            result = statement.executeUpdate();
+
+            con.commit(); // Commit the transaction
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } finally {
+                DriverManagerConnectionPool.releaseConnection(con);
+            }
+        }
+
+        return result != 0;
+    }
+
 
 }
