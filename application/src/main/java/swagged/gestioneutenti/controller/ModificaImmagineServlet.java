@@ -22,10 +22,6 @@ public class ModificaImmagineServlet extends HttpServlet
     private static final GestioneUtentiServiceImpl gestioneUtenti = new GestioneUtentiServiceImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String mode = request.getParameter("mode");
-        String path = null;
-        UtenteDAO utenteDAO = new UtenteDAO();
-
         UtenteBean utente = (UtenteBean) request.getSession().getAttribute("utente");
         Part filePart = request.getPart("immagine");
         try {

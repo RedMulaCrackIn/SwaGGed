@@ -18,10 +18,6 @@ public class CheckUsernameUtenteServlet extends HttpServlet
     private static final GestioneUtentiServiceImpl gestioneUtenti = new GestioneUtentiServiceImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String mode = request.getParameter("mode");
-        String path = null;
-        UtenteDAO utenteDAO = new UtenteDAO();
-
         response.setContentType("text/plain");
         String username = request.getParameter("username");
 

@@ -19,8 +19,6 @@ public class BanUtenteServlet extends HttpServlet
     private static final GestioneUtentiServiceImpl gestioneUtenti = new GestioneUtentiServiceImpl();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String mode = request.getParameter("mode");
-        String path = null;
         UtenteDAO utenteDAO = new UtenteDAO();
 
         String emailToBan = request.getParameter("utenteEmail"); // The email of the user to be banned

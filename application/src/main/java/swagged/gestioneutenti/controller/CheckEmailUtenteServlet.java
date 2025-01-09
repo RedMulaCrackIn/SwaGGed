@@ -19,10 +19,6 @@ public class CheckEmailUtenteServlet extends HttpServlet
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String mode = request.getParameter("mode");
-        String path = null;
-        UtenteDAO utenteDAO = new UtenteDAO();
-
         response.setContentType("text/plain");
         String email = request.getParameter("email");
 

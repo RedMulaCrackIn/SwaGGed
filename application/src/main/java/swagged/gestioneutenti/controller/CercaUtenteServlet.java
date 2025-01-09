@@ -20,10 +20,6 @@ public class CercaUtenteServlet extends HttpServlet
     private static final GestioneUtentiServiceImpl gestioneUtenti = new GestioneUtentiServiceImpl();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String mode = request.getParameter("mode");
-        String path = null;
-        UtenteDAO utenteDAO = new UtenteDAO();
-
         String substring = request.getParameter("substring");
         List<UtenteBean> risultati = null;
         try {
