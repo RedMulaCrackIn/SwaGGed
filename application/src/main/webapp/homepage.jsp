@@ -185,3 +185,13 @@
                                     </div>
                                 </div>
                             </div>
+                            <%
+                                }
+                            %>
+                        </div>
+
+
+                        <%
+                            for (PostBean post : posts) {
+                                utenteBean = utenteDAO.getByEmail(post.getUtenteEmail());
+                        %>
