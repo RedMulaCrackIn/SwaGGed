@@ -28,7 +28,6 @@ public class RimuoviCommentoServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
         request.getSession().setAttribute("utente", utente);
-        response.sendRedirect(request.getContextPath() + "/homepage.jsp");
-
+        response.sendRedirect(request.getContextPath() + "/visualizzaPost?id=" + postId);
     }
 }
