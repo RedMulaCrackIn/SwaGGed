@@ -166,3 +166,69 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="timeline" role="tabpanel">
+                            <div class="card-body p-0">
+                                <div class="row">
+
+
+                                        <%
+                                        for (PostBean post : posts) {
+
+                                    %>
+                                    <div class="col-sm-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="user-post-data py-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="me-3">
+                                                            <img class="avatar-60 rounded-circle"
+                                                                 src="<%=request.getContextPath() + "/assets/images/pfp/" + profilo.getImmagine()%>"
+                                                                 alt="">
+                                                        </div>
+                                                        <div class="w-100">
+                                                            <div class="d-flex justify-content-between">
+                                                                <div class="">
+                                                                    <h5 class="mb-0 d-inline-block">
+                                                                        <a href="<%=request.getContextPath()%>/utente?mode=visualizza&username=<%=profilo.getUsername()%>"
+                                                                           class=""><%=profilo.getUsername()%>
+                                                                        </a>
+                                                                    </h5>
+                                                                    <a href="<%=request.getContextPath()%>/community?mode=visualizza&nome=<%=post.getCommunityNome()%>">
+                                                                        <p class="mb-0"><%=post.getCommunityNome()%>
+                                                                        </p>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                            <%
+                                                            if (utente != null && (post.getUtenteEmail().equals(utente.getEmail()) || utente.isAdmin())) {
+                                                        %>
+
+                                                        <div class="card-post-toolbar">
+                                                            <button type="button" class="btn btn-link mb-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                                <i class="ri-delete-bin-7-line h4"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none;" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Confermare eliminazione?</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                                                                        <a href="<%=request.getContextPath()%>/post?mode=remove&id=<%=post.getId()%>">
+                                                                            <button type="button" class="btn btn-primary">Conferma</button>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
