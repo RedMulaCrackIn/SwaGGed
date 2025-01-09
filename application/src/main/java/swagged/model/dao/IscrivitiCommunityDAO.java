@@ -67,4 +67,36 @@ public class IscrivitiCommunityDAO {
         return result != 0;
     }
 
+    public synchronized IscrivitiCommunityBean getByKey(String utenteEmail, String communityNome) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        IscrivitiCommunityBean segueCommunity = null;
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE utenteEmail = ? AND communityNome = ?";
+
+        try{
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+
+            statement.setString(1, utenteEmail);
+            statement.setString(2, communityNome);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if(resultSet.next()) {
+                segueCommunity = new IscrivitiCommunityBean();
+                segueCommunity.setUtenteEmail(resultSet.getString("utenteEmail"));
+                segueCommunity.setCommunityNome(resultSet.getString("communityNome"));
+            }
+        } finally {
+            try {
+                if (statement != null)
+                    statement.close();
+            } finally {
+                DriverManagerConnectionPool.releaseConnection(con);
+            }
+        }
+        return segueCommunity;
+    }
+
 }
