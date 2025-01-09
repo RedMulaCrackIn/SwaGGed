@@ -167,3 +167,44 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <%
+                                        if(utente != null){
+                                    %>
+                                    <form class="comment-text d-flex align-items-center mt-3 " action="commento"
+                                          method="post">
+                                        <input type="hidden" name="mode" value="create">
+                                        <input type="hidden" name="postId" value="<%=post.getId()%>">
+                                        <input type="text" class="form-control rounded" name="corpo"
+                                               placeholder="Aggiungi commento">
+                                        <button type="submit" class="btn btn-primary">Commenta</button>
+                                    </form>
+                                    <%
+                                        }
+                                    %>
+                                    <hr>
+
+                                    <ul class="post-comments p-0 m-0">
+                                            <%
+                                                for (CommentoBean commento : post.getCommenti()) {
+                                                    utenteBean = utenteDAO.getByEmail(commento.getUtenteEmail());
+                                            %>
+                                        <li class="mb-2">
+                                            <div class="d-flex">
+                                                <div class="user-img">
+                                                    <img src="<%=request.getContextPath() + "/assets/images/pfp/" + utenteBean.getImmagine()%>"
+                                                         alt="userimg" class="avatar-35 rounded-circle img-fluid">
+                                                </div>
+                                                <div class="w-100">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="comment-data-block ms-3">
+                                                            <h6>
+                                                                <a href="<%=request.getContextPath()%>/utente?mode=visualizza&username=<%=utenteBean.getUsername()%>"
+                                                                   class=""><%=utenteBean.getUsername()%>
+                                                                </a>
+                                                            </h6>
+                                                            <p class="mb-0"><%=commento.getCorpo()%>
+                                                            </p>
+                                                        </div>
+                                                            <%
+                                                                if (utente != null && (commento.getUtenteEmail().equals(utente.getEmail()) || utente.isAdmin())) {
+                                                            %>
