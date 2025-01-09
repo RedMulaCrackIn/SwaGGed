@@ -166,5 +166,73 @@ public class PostDAO {
         return posts;
     }
 
+    public synchronized List<PostBean> getByEmail(String email) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        List<PostBean> posts = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE utenteEmail = ?";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+            statement.setString(1, email);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                PostBean post = new PostBean();
+                post.setId(result.getInt("id"));
+                post.setTitolo(result.getString("titolo"));
+                post.setCorpo(result.getString("corpo"));
+                post.setImmagine(result.getString("immagine"));
+                post.setLikes(result.getInt("likes")); // Add likes after segnalazioni
+                post.setDataCreazione(result.getDate("dataCreazione"));
+                post.setNumeroCommenti(result.getInt("numeroCommenti"));
+                post.setUtenteEmail(result.getString("utenteEmail"));
+                post.setCommunityNome(result.getString("communityNome"));
+                posts.add(post);
+            }
+        } finally {
+            if (statement != null) statement.close();
+            DriverManagerConnectionPool.releaseConnection(con);
+        }
+        return posts;
+    }
+
+    public synchronized List<PostBean> getByCommunityNome(String communityNome) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        List<PostBean> posts = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE communityNome = ?";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+            statement.setString(1, communityNome);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                PostBean post = new PostBean();
+                post.setId(result.getInt("id"));
+                post.setTitolo(result.getString("titolo"));
+                post.setCorpo(result.getString("corpo"));
+                post.setImmagine(result.getString("immagine"));
+                post.setLikes(result.getInt("likes"));
+                post.setDataCreazione(result.getDate("dataCreazione"));
+                post.setNumeroCommenti(result.getInt("numeroCommenti"));
+                post.setUtenteEmail(result.getString("utenteEmail"));
+                post.setCommunityNome(result.getString("communityNome"));
+                posts.add(post);
+            }
+        } finally {
+            if (statement != null) statement.close();
+            DriverManagerConnectionPool.releaseConnection(con);
+        }
+        return posts;
+    }
+
 
 }
