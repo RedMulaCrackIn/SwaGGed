@@ -1,3 +1,5 @@
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -77,6 +79,7 @@
     </div>
   </section>
 </div>
+
 <!-- Backend Bundle JavaScript -->
 <script src="<%=request.getContextPath()%>/assets/js/libs.min.js"></script>
 <!-- Slider JavaScript -->
