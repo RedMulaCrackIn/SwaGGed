@@ -138,4 +138,34 @@ public class CommentoDao {
         }
         return commento;
     }
+
+    public synchronized List<CommentoBean> getByPostId(int postId) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        List<CommentoBean> comments = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE postId = ?";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+            statement.setInt(1, postId);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                CommentoBean commento = new CommentoBean();
+                commento.setId(result.getInt("id"));
+                commento.setCorpo(result.getString("corpo"));
+                commento.setUtenteEmail(result.getString("utenteEmail"));
+                commento.setPostId(result.getInt("postId"));
+
+                comments.add(commento);
+            }
+        } finally {
+            if (statement != null) statement.close();
+            DriverManagerConnectionPool.releaseConnection(con);
+        }
+        return comments;
+    }
 }
