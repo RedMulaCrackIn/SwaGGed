@@ -112,4 +112,12 @@ public class GestioneCommunityServiceImpl implements GestioneCommunityService
                 return null;
         }
     }
+
+    @Override
+    public List<CommunityBean> cerca(String substring) throws SQLException {
+        if(substring == null || substring.isEmpty())
+            return null;
+        return communityDAO.getByNameSubstring(substring);
+    }
+
 }
