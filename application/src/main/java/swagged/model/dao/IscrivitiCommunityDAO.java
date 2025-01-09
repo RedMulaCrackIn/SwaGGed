@@ -39,4 +39,32 @@ public class IscrivitiCommunityDAO {
         }
         return result != 0;
     }
+
+    public synchronized boolean delete(String utenteEmail, String communityNome) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        int result = 0;
+
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE utenteEmail = ? AND communityNome = ?";
+
+        try{
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+
+            statement.setString(1, utenteEmail);
+            statement.setString(2, communityNome);
+
+            result = statement.executeUpdate();
+            con.commit();
+        } finally {
+            try {
+                if (statement != null)
+                    statement.close();
+            } finally {
+                DriverManagerConnectionPool.releaseConnection(con);
+            }
+        }
+        return result != 0;
+    }
+
 }
