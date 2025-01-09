@@ -104,3 +104,50 @@
                                         </form>
                                     </div>
                                     <hr>
+                                </div>
+                                <div class="modal fade" id="post-modal" tabindex="-1" aria-labelledby="post-modalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="post-modalLabel">Crea Post</h5>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
+                                                        class="ri-close-fill"></i></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="post" method="post" enctype="multipart/form-data" id="creaPost">
+                                                    <input type="hidden" name="mode" value="create">
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="communityNome">Nome community</label>
+                                                        <input type="text" class="form-control mb-0" id="communityNome"
+                                                               name="communityNome"
+                                                               placeholder="Inserisci il nome della community in cui pubblicare il post"
+                                                               required>
+                                                        <p class="invalid-feedback" id="error-communityPost"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="titolo">Titolo</label>
+                                                        <input type="text" class="form-control mb-0" id="titolo"
+                                                               name="titolo"
+                                                               placeholder="Inserisci titolo" required>
+                                                        <p class="invalid-feedback" id="error-titolo"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="form-label" for="corpo">Corpo</label>
+                                                        <input type="text" class="form-control mb-0" id="corpo" name="corpo"
+                                                               placeholder="Inserisci corpo">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="immagine"
+                                                               class="form-label custom-file-input">Immagine</label>
+                                                        <input class="form-control" type="file" id="immagine"
+                                                               name="immagine">
+                                                    </div>
+                                                    <hr>
+                                                    <button type="submit" class="btn btn-primary d-block w-100 mt-3">Crea
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
