@@ -1,5 +1,7 @@
 package swagged.gestioneutenti.services;
 
+import jakarta.servlet.GenericServlet;
+import jakarta.servlet.http.Part;
 import swagged.model.bean.CommunityBean;
 import swagged.model.bean.PostBean;
 import swagged.model.bean.UtenteBean;
@@ -44,5 +46,40 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService
 
         List<UtenteBean> utentiCercati = utenteDAO.getByUsernameSubstring(substring);
         return utentiCercati;
+    }
+
+    @Override
+    public boolean modificaImmagine(UtenteBean utente, Part filePart, GenericServlet servlet) throws SQLException {
+        if (filePart == null || utente == null)
+            return false;
+
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        String applicationPath = servlet.getServletContext().getRealPath("");
+
+        String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
+
+        File uploadDir = new File(uploadFilePath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+        String sanitizedFileName = fileName.replaceAll("\\s+", "_");
+        String filePath = uploadFilePath + File.separator + sanitizedFileName;
+        File file = new File(filePath);
+        while (file.exists()) {
+            String uniqueID = UUID.randomUUID().toString();
+            sanitizedFileName = uniqueID + "_" + sanitizedFileName;
+            filePath = uploadFilePath + File.separator + sanitizedFileName;
+            file = new File(filePath);
+        }
+        try {
+            Files.copy(filePart.getInputStream(), Paths.get(filePath));
+        } catch (IOException e) {
+            return false;
+        }
+        String relativeFileName = sanitizedFileName;
+
+        utente.setImmagine(relativeFileName);
+
+        return utenteDAO.update(utente, utente.getEmail());
     }
 }
