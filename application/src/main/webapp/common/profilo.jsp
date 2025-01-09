@@ -42,7 +42,54 @@
           href="<%=request.getContextPath()%>/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
 
 </head>
-<body>
-
+<body class="  ">
+<!-- Wrapper Start -->
+<div id="loading">
+    <div id="loading-center">
+    </div>
+</div>
+<div class="wrapper">
+    <jsp:include page="../fragments/sidebar.jsp"/>
+    <jsp:include page="../fragments/navbar.jsp"/>
+    <div id="content-page" class="content-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body profile-page p-0">
+                            <div class="profile-header">
+                                <div class="position-relative">
+                                    <img src="<%=request.getContextPath()%>/assets/images/trasparente.png"
+                                         alt="profile-bg"
+                                         class="rounded img-fluid">
+                                </div>
+                                <div class="user-detail text-center mb-3">
+                                    <div class="profile-img">
+                                        <img src="<%=request.getContextPath() + "/assets/images/pfp/" + utente.getImmagine()%>"
+                                             alt="profile-img"
+                                             class="avatar-130 img-fluid"/>
+                                    </div>
+                                    <div class="profile-detail">
+                                        <h3 class=""><%=utente.getUsername()%>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="profile-info p-3 d-flex align-items-center justify-content-between position-relative">
+                                    <div class="social-info">
+                                        <ul class="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
+                                            <li class="text-center ps-3">
+                                                <h6>Post</h6>
+                                                <p class="mb-0"><%=utente.get("postCreati").size()%>
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <form class="" data-bs-toggle="modal"
+                                          data-bs-target="#immagine-modal"
+                                          action="javascript:void();">
+                                        <a href="#immagine-modal"><i class="ri-pencil-line"></i></a>
+                                    </form>
+                                </div>
+                            </div>
 </body>
 </html>
