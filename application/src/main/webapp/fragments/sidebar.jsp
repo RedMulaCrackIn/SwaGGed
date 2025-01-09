@@ -30,3 +30,95 @@
         }
     </style>
 </head>
+<body>
+
+<div class="iq-top-navbar">
+    <div class="iq-navbar-custom">
+        <nav class="navbar navbar-expand-lg navbar-light p-0">
+            <div class="iq-navbar-logo d-flex justify-content-between">
+                <a href="<%=request.getContextPath()%>/homepage.jsp">
+                    <img src="<%=request.getContextPath()%>/assets/images/logo.png" class="img-fluid" alt="">
+                    <span>SwaGGed</span>
+                </a>
+                <%
+                    if (utente != null) {
+                %>
+                <div class="iq-menu-bt align-self-center">
+                    <div class="wrapper-menu">
+                        <div class="main-circle"><i class="ri-menu-line"></i></div>
+                    </div>
+                </div>
+                <%
+                    }
+                %>
+            </div>
+            <div class="iq-search-bar device-search">
+                <form action="<%=request.getContextPath() + "/homepage.jsp"%>" class="searchbox" method="get">
+                    <button class="btn-link search-link" href="" type="submit"><i class="ri-search-line"></i></button>
+                    <input type="text" class="text search-input" placeholder="Cerca contenuti" name="query">
+                    <select class="form-select form-select-sm mb-3" name="type">
+                        <option selected="" value="post">Post</option>
+                        <option value="utente">Utente</option>
+                        <option value="community">Community</option>
+                    </select>
+                </form>
+            </div>
+            <%
+                if (utente != null) {
+            %>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav  ms-auto navbar-list">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="   d-flex align-items-center dropdown-toggle" id="drop-down-arrow"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="<%=request.getContextPath() + "/assets/images/pfp/" + utente.getImmagine()%>"
+                                 class="img-fluid rounded-circle me-3" alt="user">
+                            <div class="caption">
+                                <h6 class="mb-0 line-height"><%=utente.getUsername()%>
+                                </h6>
+                            </div>
+                        </a>
+                        <div class="sub-drop dropdown-menu caption-menu" aria-labelledby="drop-down-arrow">
+                            <div class="card shadow-none m-0">
+                                <div class="card-header  bg-primary">
+                                    <div class="header-title">
+                                        <h5 class="mb-0 text-white">Ciao <%=utente.getUsername()%>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0 ">
+                                    <a href="<%=request.getContextPath()%>/utente?mode=visualizza&username=<%=utente.getUsername()%>"
+                                       class="iq-sub-card iq-bg-primary-hover">
+                                        <div class="d-flex align-items-center">
+                                            <div class="rounded card-icon bg-soft-primary">
+                                                <i class="ri-file-user-line"></i>
+                                            </div>
+                                            <div class="ms-3">
+                                                <h6 class="mb-0 ">Profilo</h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="d-inline-block w-100 text-center p-3">
+                                        <a class="btn btn-primary iq-sign-btn"
+                                           href="<%=request.getContextPath()%>/logout" role="button">Logout<i
+                                                class="ri-login-box-line ms-2"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <%
+            } else {
+            %>
+            <div class="   d-flex align-items-center">
+                <a class="btn btn-primary iq-sign-btn" href="<%=request.getContextPath()%>/login.jsp" role="button">Accedi<i
+                        class="ri-login-box-line ms-2"></i></a>
+            </div>
+            <%
+                }
+            %>
+        </nav>
+    </div>
+</div>
