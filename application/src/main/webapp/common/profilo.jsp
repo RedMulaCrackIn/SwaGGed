@@ -156,6 +156,26 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div class="user-tabing">
+                                <ul class="nav nav-pills d-flex align-items-center justify-content-center profile-feed-items p-0 m-0">
+                                    <li class="nav-item col-12 col-sm-3 p-0">
+                                        <a class="nav-link active" href="#pills-timeline-tab" data-bs-toggle="pill"
+                                           data-bs-target="#timeline" role="button">Post Creati</a>
+                                    </li>
+                                    <li class="nav-item col-12 col-sm-3 p-0">
+                                        <a class="nav-link" href="#pills-about-tab" data-bs-toggle="pill"
+                                           data-bs-target="#about" role="button">Post Apprezzati</a>
+                                    </li>
+                                    <li class="nav-item col-12 col-sm-3 p-0">
+                                        <a class="nav-link" href="#pills-friends-tab" data-bs-toggle="pill"
+                                           data-bs-target="#friends" role="button">Commenti Creati</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 </body>
 </html>
