@@ -149,6 +149,44 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
         return null;
     }
 
+    @Override
+    public UtenteBean registrazione(String email, String username, String password, String passwordCheck) throws SQLException {
+        if (email == null || email.isEmpty() || username == null || username.isEmpty() ||
+                password == null || password.isEmpty() || passwordCheck == null || passwordCheck.isEmpty()) {
+            return null;
+        }
+
+        // Encode passwords in Base64
+        Base64.Encoder encoder = Base64.getEncoder();
+        String pwd64 = encoder.encodeToString(password.getBytes());
+        String pwdchk64 = encoder.encodeToString(passwordCheck.getBytes());
+
+        if (!pwd64.equals(pwdchk64)) {
+            return null; // Passwords do not match
+        }
+
+        UtenteDAO dbUtenti = new UtenteDAO();
+        List<UtenteBean> listaUtenti = dbUtenti.getAll();
+
+        for (UtenteBean utenteEsistente : listaUtenti) {
+            if (utenteEsistente.getUsername().equalsIgnoreCase(username) ||
+                    utenteEsistente.getEmail().equalsIgnoreCase(email)) {
+                return null; // Username or email already exists
+            }
+        }
+
+        // Create and save the new user
+        UtenteBean nuovoUtente = new UtenteBean();
+        nuovoUtente.setUsername(username);
+        nuovoUtente.setPassword(pwd64);
+        nuovoUtente.setEmail(email);
+        nuovoUtente.setAdmin(false);
+        nuovoUtente.setImmagine("noPfp.jpg");
+
+        dbUtenti.save(nuovoUtente);
+        return nuovoUtente;
+    }
+
 
 }
 
