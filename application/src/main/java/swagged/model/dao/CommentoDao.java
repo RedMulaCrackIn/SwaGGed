@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 public class CommentoDao {
+
     private static final String TABLE_NAME = "commento";
 
     public synchronized boolean save(CommentoBean bean) throws SQLException {
@@ -35,6 +36,7 @@ public class CommentoDao {
         }
         return result != 0;
     }
+
     public synchronized boolean delete(int id) throws SQLException {
         Connection con = null;
         PreparedStatement statement = null;
@@ -80,5 +82,35 @@ public class CommentoDao {
         }
         return result != 0;
     }
+
+    public synchronized List<CommentoBean> getAll() throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        List<CommentoBean> comments = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_NAME;
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                CommentoBean commento = new CommentoBean();
+                commento.setId(result.getInt("id"));
+                commento.setCorpo(result.getString("corpo"));
+                commento.setUtenteEmail(result.getString("utenteEmail"));
+                commento.setPostId(result.getInt("postId"));
+
+                comments.add(commento);
+            }
+        } finally {
+            if (statement != null) statement.close();
+            DriverManagerConnectionPool.releaseConnection(con);
+        }
+        return comments;
+    }
+
 
 }
