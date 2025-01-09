@@ -115,6 +115,40 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
         return utente;
     }
 
+    @Override
+    public UtenteBean login(String username, String password) throws SQLException {
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+            return null;
+        }
+
+        // Encode the password in Base64
+        Base64.Encoder encoder = Base64.getEncoder();
+        String password64 = encoder.encodeToString(password.getBytes());
+
+        // Check login credentials
+        UtenteDAO utenteDAO = new UtenteDAO();
+        UtenteBean utente = utenteDAO.getByUsername(username);
+
+        if (utente != null && utente.getPassword().equals(password64)) {
+            PostDAO postDAO = new PostDAO();
+            ApprezzaPostDAO apprezzaPostDAO = new ApprezzaPostDAO();
+            CommentoDAO commentoDAO = new CommentoDAO();
+            CommunityDAO communityDAO = new CommunityDAO();
+            IscrivitiCommunityDAO iscrivitiCommunityDAO = new IscrivitiCommunityDAO();
+
+            // Populate user details
+            utente.set("postCreati", postDAO.getByEmail(utente.getEmail()));
+            utente.set("postApprezzati", apprezzaPostDAO.getByEmail(utente.getEmail()));
+            utente.set("commentiCreati", commentoDAO.getByUtenteEmail(utente.getEmail()));
+            utente.set("communityCreate", communityDAO.getByEmail(utente.getEmail()));
+            utente.set("communityIscritto", iscrivitiCommunityDAO.getByEmail(utente.getEmail()));
+
+            return utente;
+        }
+
+        return null;
+    }
+
 
 }
 
