@@ -273,3 +273,58 @@
                                 <%
                                     }
                                 %>
+                                    <div class="comment-area mt-3">
+                                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                            <div class="like-block position-relative d-flex align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="like-data">
+                                                        <%
+                                                            if (utente != null && utente.get("postApprezzati").contains(post)) {
+                                                        %>
+                                                        <a href="<%=request.getContextPath()%>/post?mode=like&id=<%=post.getId()%>">
+                                                            <i class="fa fa-thumbs-up" style="color: #50b5ff"></i>
+                                                        </a>
+                                                        <%
+                                                        } else if(utente != null && !utente.get("postApprezzati").contains(post)){
+                                                        %>
+                                                        <a href="<%=request.getContextPath()%>/post?mode=like&id=<%=post.getId()%>">
+                                                            <i class="fa fa-thumbs-up" style="color: #777d74"></i>
+                                                        </a>
+                                                        <%
+                                                        } else{
+                                                        %>
+                                                        <i class="fa fa-thumbs-up" style="color: #777d74"></i>
+                                                        <%
+                                                            }
+                                                        %>
+                                                    </div>
+                                                    <div class="total-like-block ms-2 me-3">
+                                                        <label><%=post.getLikes()%></label>
+                                                    </div>
+                                                </div>
+                                                <div class="like-data">
+                                                    <a href="<%=request.getContextPath()%>/post?mode=visualizza&id=<%=post.getId()%>">
+                                                        <i class="far fa-comments"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="total-like-block ms-2 me-3">
+                                                    <a href="<%=request.getContextPath()%>/post?mode=visualizza&id=<%=post.getId()%>">
+                                                        <label><%=post.getNumeroCommenti()%></label>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%
+                            }
+                        %>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
