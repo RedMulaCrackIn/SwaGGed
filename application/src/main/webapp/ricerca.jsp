@@ -49,7 +49,7 @@
                         class="ri-close-fill"></i></button>
             </div>
             <div class="modal-body">
-                <form action="community" method="post" id="creaCommunity">
+                <form action="creaCommunity" method="post" id="creaCommunity">
                     <input type="hidden" name="mode" value="create">
                     <div class="form-group">
                         <label class="form-label" for="communityNomeCreazione">Nome community</label>
@@ -101,11 +101,11 @@
 
         if (type != null && query != null && !query.trim().isEmpty()) {
             if (type.equals("post")) {
-                response.sendRedirect(request.getContextPath() + "/post?mode=cerca&substring=" + URLEncoder.encode(query, "UTF-8"));
+                response.sendRedirect(request.getContextPath() + "/cercaPost?substring=" + URLEncoder.encode(query, "UTF-8"));
             } else if (type.equals("utente")) {
-                response.sendRedirect(request.getContextPath() + "/utente?mode=cerca&substring=" + URLEncoder.encode(query, "UTF-8"));
+                response.sendRedirect(request.getContextPath() + "/cercaUtente?substring=" + URLEncoder.encode(query, "UTF-8"));
             } else if (type.equals("community")) {
-                response.sendRedirect(request.getContextPath() + "/communitymode=cerca&substring=" + URLEncoder.encode(query, "UTF-8"));
+                response.sendRedirect(request.getContextPath() + "/cercaCommunitysubstring=" + URLEncoder.encode(query, "UTF-8"));
             }
         }
     %>
@@ -136,11 +136,11 @@
                                             <div class="d-flex justify-content-between">
                                                 <div class="">
                                                     <h5 class="mb-0 d-inline-block">
-                                                        <a href="<%=request.getContextPath()%>/utente?mode=visualizza&username=<%=utenteBean.getUsername()%>"
+                                                        <a href="<%=request.getContextPath()%>/visualizzaUtente?username=<%=utenteBean.getUsername()%>"
                                                            class=""><%=utenteBean.getUsername()%>
                                                         </a>
                                                     </h5>
-                                                    <a href="<%=request.getContextPath()%>/community?mode=visualizza&nome=<%=post.getCommunityNome()%>">
+                                                    <a href="<%=request.getContextPath()%>/visualizzaCommunity?nome=<%=post.getCommunityNome()%>">
                                                         <p class="mb-0"><%=post.getCommunityNome()%>
                                                         </p>
                                                     </a>
@@ -172,7 +172,7 @@
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Annulla
                                                         </button>
-                                                        <a href="<%=request.getContextPath()%>/post?mode=remove&id=<%=post.getId()%>">
+                                                        <a href="<%=request.getContextPath()%>/rimuoviPost?id=<%=post.getId()%>">
                                                             <button type="button" class="btn btn-primary">Conferma
                                                             </button>
                                                         </a>
@@ -215,13 +215,13 @@
                                                     <%
                                                         if (utente != null && utente.get("postApprezzati").contains(post)) {
                                                     %>
-                                                    <a href="<%=request.getContextPath()%>/post?mode=like&id=<%=post.getId()%>">
+                                                    <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>">
                                                         <i class="fa fa-thumbs-up" style="color: #50b5ff"></i>
                                                     </a>
                                                     <%
                                                     } else if (utente != null && !utente.get("postApprezzati").contains(post)) {
                                                     %>
-                                                    <a href="<%=request.getContextPath()%>/post?mode=like&id=<%=post.getId()%>">
+                                                    <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>">
                                                         <i class="fa fa-thumbs-up" style="color: #777d74"></i>
                                                     </a>
                                                     <%
@@ -238,12 +238,12 @@
                                                 </div>
                                             </div>
                                             <div class="like-data">
-                                                <a href="<%=request.getContextPath()%>/post?mode=visualizza&id=<%=post.getId()%>">
+                                                <a href="<%=request.getContextPath()%>/visualizzaPost?id=<%=post.getId()%>">
                                                     <i class="far fa-comments"></i>
                                                 </a>
                                             </div>
                                             <div class="total-like-block ms-2 me-3">
-                                                <a href="<%=request.getContextPath()%>/post?mode=visualizza&id=<%=post.getId()%>">
+                                                <a href="<%=request.getContextPath()%>/visualizzaPost?id=<%=post.getId()%>">
                                                     <label><%=post.getNumeroCommenti()%>
                                                     </label>
                                                 </a>
@@ -272,7 +272,7 @@
                                             <div class="d-flex justify-content-between">
                                                 <div class="">
                                                     <h5 class="mb-0 d-inline-block">
-                                                        <a href="<%=request.getContextPath()%>/community?mode=visualizza&nome=<%=community.getNome()%>"
+                                                        <a href="<%=request.getContextPath()%>/visualizzaCommunity?nome=<%=community.getNome()%>"
                                                            class=""><%=community.getNome()%>
                                                         </a>
                                                     </h5>
@@ -305,7 +305,7 @@
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Annulla
                                                         </button>
-                                                        <a href="<%=request.getContextPath()%>/community?mode=remove&nome=<%=community.getNome()%>">
+                                                        <a href="<%=request.getContextPath()%>/rimuoviCommunity?nome=<%=community.getNome()%>">
                                                             <button type="button" class="btn btn-primary">Conferma
                                                             </button>
                                                         </a>
@@ -343,7 +343,7 @@
                                             <div class="d-flex justify-content-between">
                                                 <div class="">
                                                     <h5 class="mb-0 d-inline-block">
-                                                        <a href="<%=request.getContextPath()%>/utente?mode=visualizza&username=<%=utenteBean.getUsername()%>"
+                                                        <a href="<%=request.getContextPath()%>/visualizzaUtente?username=<%=utenteBean.getUsername()%>"
                                                            class=""><%=utenteBean.getUsername()%>
                                                         </a>
                                                     </h5>
@@ -375,7 +375,7 @@
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Annulla
                                                         </button>
-                                                        <a href="<%=request.getContextPath()%>/utente?mode=ban&utenteEmail=<%=utenteBean.getEmail()%>">
+                                                        <a href="<%=request.getContextPath()%>/banUtente?utenteEmail=<%=utenteBean.getEmail()%>">
                                                             <button type="button" class="btn btn-primary">Conferma
                                                             </button>
                                                         </a>
