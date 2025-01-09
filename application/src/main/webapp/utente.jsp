@@ -1,16 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: matti
-  Date: 09/01/2025
-  Time: 12:49
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@ page import="swagged.model.bean.UtenteBean" %>
+<%@ page import="swagged.model.bean.PostBean" %>
+<%@ page import="java.util.List" %>
+<%
+    UtenteBean profilo = (UtenteBean) session.getAttribute("profilo");
+    UtenteBean utente = (UtenteBean) session.getAttribute("utente");
+    List<PostBean> posts = (List<PostBean>) profilo.get("postCreati");
+%>
 
-</body>
-</html>
