@@ -105,6 +105,17 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
         return contentType != null && (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/gif") || contentType.equals("image/jpg"));
     }
 
+    public UtenteBean visualizza(String username) throws SQLException {
+        if (username == null || username.isEmpty() || utenteDAO.getByUsername(username) == null)
+            return null;
+        UtenteBean utente = utenteDAO.getByUsername(username);
+        PostDAO postDAO = new PostDAO();
+        utente.set("postCreati", postDAO.getByEmail(utente.getEmail()));
+
+        return utente;
+    }
+
+
 }
 
 
