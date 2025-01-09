@@ -35,4 +35,27 @@ public class CommentoDao {
         }
         return result != 0;
     }
+    public synchronized boolean delete(int id) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        int result = 0;
+
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+            statement.setInt(1, id);
+
+            result = statement.executeUpdate();
+            con.commit();
+        } finally {
+            if (statement != null) statement.close();
+            DriverManagerConnectionPool.releaseConnection(con);
+        }
+        return result != 0;
+    }
+
+
+
 }
