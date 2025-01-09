@@ -122,6 +122,7 @@
         </nav>
     </div>
 </div>
+
 <script src="<%=request.getContextPath()%>/assets/js/libs.min.js"></script>
 <!-- Slider JavaScript -->
 <script src="<%=request.getContextPath()%>/assets/js/slider.js"></script>
