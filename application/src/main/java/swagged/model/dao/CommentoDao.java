@@ -168,4 +168,34 @@ public class CommentoDao {
         }
         return comments;
     }
+
+    public synchronized List<CommentoBean> getByUtenteEmail(String utenteEmail) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        List<CommentoBean> comments = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE utenteEmail = ?";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+            statement.setString(1, utenteEmail);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                CommentoBean commento = new CommentoBean();
+                commento.setId(result.getInt("id"));
+                commento.setCorpo(result.getString("corpo"));
+                commento.setUtenteEmail(result.getString("utenteEmail"));
+                commento.setPostId(result.getInt("postId"));
+
+                comments.add(commento);
+            }
+        } finally {
+            if (statement != null) statement.close();
+            DriverManagerConnectionPool.releaseConnection(con);
+        }
+        return comments;
+    }
 }
