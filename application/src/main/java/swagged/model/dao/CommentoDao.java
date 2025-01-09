@@ -56,6 +56,29 @@ public class CommentoDao {
         return result != 0;
     }
 
+    public synchronized boolean update(CommentoBean bean) throws SQLException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        int result = 0;
 
+        String query = "UPDATE " + TABLE_NAME + " SET corpo = ?, utenteEmail = ?, postId = ? WHERE id = ?";
+
+        try {
+            con = DriverManagerConnectionPool.getConnection();
+            statement = con.prepareStatement(query);
+
+            statement.setString(1, bean.getCorpo());
+            statement.setString(2, bean.getUtenteEmail());
+            statement.setInt(3, bean.getPostId());
+            statement.setInt(4, bean.getId());
+
+            result = statement.executeUpdate();
+            con.commit();
+        } finally {
+            if (statement != null) statement.close();
+            DriverManagerConnectionPool.releaseConnection(con);
+        }
+        return result != 0;
+    }
 
 }
