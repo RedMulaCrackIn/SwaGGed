@@ -50,3 +50,26 @@
           href="<%=request.getContextPath()%>/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
 
 </head>
+
+<div id="loading">
+    <div id="loading-center">
+    </div>
+</div>
+<div class="wrapper">
+    <jsp:include page="fragments/sidebar.jsp"/>
+    <jsp:include page="fragments/navbar.jsp"/>
+<%
+    // Controlla se il form Ã¨ stato inviato
+    String type = request.getParameter("type");
+    String query = request.getParameter("query");
+
+    if (type != null && query != null && !query.trim().isEmpty()) {
+        if (type.equals("post")) {
+            response.sendRedirect(request.getContextPath() + "/post?mode=cerca&substring=" + URLEncoder.encode(query, "UTF-8"));
+        } else if (type.equals("utente")) {
+            response.sendRedirect(request.getContextPath() + "/utente?mode=cerca&substring=" + URLEncoder.encode(query, "UTF-8"));
+        } else if (type.equals("community")) {
+            response.sendRedirect(request.getContextPath() + "/community?mode=cerca&substring=" + URLEncoder.encode(query, "UTF-8"));
+        }
+    }
+%>
