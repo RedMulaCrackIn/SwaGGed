@@ -71,3 +71,63 @@
         </div>
     </div>
 </div>
+    <%
+} else {
+%>
+
+<!-- Wrapper Start -->
+
+<div class="wrapper">
+        <%
+        // Controlla se il form è stato inviato
+        String type = request.getParameter("type");
+        String query = request.getParameter("query");
+
+        if (type != null && query != null && !query.trim().isEmpty()) {
+            if (type.equals("post")) {
+                response.sendRedirect(request.getContextPath() + "/post?mode=cerca&substring=" + URLEncoder.encode(query, "UTF-8"));
+            } else if (type.equals("utente")) {
+                response.sendRedirect(request.getContextPath() + "/utente?mode=cerca&substring=" + URLEncoder.encode(query, "UTF-8"));
+            } else if (type.equals("community")) {
+                response.sendRedirect(request.getContextPath() + "/communitymode=cerca&substring=" + URLEncoder.encode(query, "UTF-8"));
+            }
+        }
+    %>
+
+    <div id="content-page" class="content-page">
+        <div class="container">
+            <div class="row row-eq-height">
+                <div class="col-md-12">
+
+
+                        <%
+                        if (risultati.get(0) instanceof PostBean) {
+                            for (Bean bean : risultati) {
+                                PostBean post = (PostBean) bean;
+                                utenteBean = utenteDAO.getByEmail(post.getUtenteEmail());
+                    %>
+                    <div class="col-sm-12">
+                        <div class="card card-block card-stretch card-height">
+                            <div class="card-body">
+                                <div class="user-post-data py-3">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="me-3">
+                                            <img class="avatar-60 rounded-circle"
+                                                 src="<%=request.getContextPath() + "/assets/images/pfp/" + utenteBean.getImmagine()%>"
+                                                 alt="">
+                                        </div>
+                                        <div class="w-100">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="">
+                                                    <h5 class="mb-0 d-inline-block">
+                                                        <a href="<%=request.getContextPath()%>/utente?mode=visualizza&username=<%=utenteBean.getUsername()%>"
+                                                           class=""><%=utenteBean.getUsername()%>
+                                                        </a>
+                                                    </h5>
+                                                    <a href="<%=request.getContextPath()%>/community?mode=visualizza&nome=<%=post.getCommunityNome()%>">
+                                                        <p class="mb-0"><%=post.getCommunityNome()%>
+                                                        </p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
