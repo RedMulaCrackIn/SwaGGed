@@ -13,7 +13,8 @@ import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
 
-public class GestioneCommunityServiceImpl implements GestioneCommunityService {
+public class GestioneCommunityServiceImpl implements GestioneCommunityService
+{
     private CommunityDAO communityDAO = new CommunityDAO();
     private IscrivitiCommunityDAO iscrivitiCommunityDAO = new IscrivitiCommunityDAO();
     private UtenteDAO utenteDAO = new UtenteDAO();
@@ -72,5 +73,43 @@ public class GestioneCommunityServiceImpl implements GestioneCommunityService {
         return communityBean;
     }
 
+    @Override
+    public CommunityBean iscrizione(UtenteBean utente, String nome) throws SQLException {
+        if(utente == null || nome == null || nome.isEmpty() || communityDAO.getByNome(nome) == null)
+            return null;
 
+        IscrivitiCommunityBean iscrivitiCommunityBean = new IscrivitiCommunityBean();
+
+        if((iscrivitiCommunityDAO.getByKey(utente.getEmail(), nome)) == null) {
+            iscrivitiCommunityBean.setUtenteEmail(utente.getEmail());
+            iscrivitiCommunityBean.setCommunityNome(nome);
+            iscrivitiCommunityDAO.save(iscrivitiCommunityBean);
+
+            CommunityBean communityBean = communityDAO.getByNome(nome);
+            communityBean.aggiungiIscritto();
+
+            //UtenteBean utente = utenteDAO.getByEmail(utenteEmail);
+            utente.add("communityIscritto", iscrivitiCommunityBean);
+
+            if(communityDAO.update(communityBean))
+                return communityBean;
+            else
+                return null;
+
+        } else {
+            iscrivitiCommunityBean = iscrivitiCommunityDAO.getByKey(utente.getEmail(), nome);
+            iscrivitiCommunityDAO.delete(utente.getEmail(), nome);
+
+            CommunityBean communityBean = communityDAO.getByNome(nome);
+            communityBean.rimuoviIscritto();
+
+            //UtenteBean utente = utenteDAO.getByEmail(utenteEmail);
+            utente.remove("communityIscritto", iscrivitiCommunityBean);
+
+            if(communityDAO.update(communityBean))
+                return communityBean;
+            else
+                return null;
+        }
+    }
 }
