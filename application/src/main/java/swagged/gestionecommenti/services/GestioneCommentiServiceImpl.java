@@ -11,9 +11,23 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class GestioneCommentiServiceImpl implements GestioneCommentiService{
-    private CommentoDAO commentoDAO = new CommentoDAO();
-    private UtenteDAO utenteDAO = new UtenteDAO();
-    private PostDAO postDAO = new PostDAO();
+    private CommentoDAO commentoDAO;
+    private UtenteDAO utenteDAO;
+    private PostDAO postDAO;
+
+    // Costruttore vuoto che inizializza i DAO con new
+    public GestioneCommentiServiceImpl() {
+        this.commentoDAO = new CommentoDAO();
+        this.utenteDAO = new UtenteDAO();
+        this.postDAO = new PostDAO();
+    }
+
+    // Costruttore che accetta i DAO come parametri
+    public GestioneCommentiServiceImpl(CommentoDAO commentoDAO, UtenteDAO utenteDAO, PostDAO postDAO) {
+        this.commentoDAO = commentoDAO;
+        this.utenteDAO = utenteDAO;
+        this.postDAO = postDAO;
+    }
 
     @Override
     public CommentoBean create(int postId, String corpo, String utenteEmail) throws SQLException {
