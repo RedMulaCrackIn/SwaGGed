@@ -16,9 +16,11 @@ import java.sql.SQLException;
 @WebServlet("/likePost")
 public class LikePostServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final GestionePostService gestionePost = new GestionePostServiceImpl();
+    private GestionePostService gestionePost;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public LikePostServlet(GestionePostServiceImpl gestionePost) {this.gestionePost = gestionePost;}
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UtenteBean utente = (UtenteBean) request.getSession().getAttribute("utente");
         int id = Integer.parseInt(request.getParameter("id"));

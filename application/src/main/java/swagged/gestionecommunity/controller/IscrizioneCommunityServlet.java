@@ -16,9 +16,11 @@ import java.sql.SQLException;
 @WebServlet("/iscrizioneCommunity")
 public class IscrizioneCommunityServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final GestioneCommunityService gestioneCommunity = new GestioneCommunityServiceImpl();
+    private GestioneCommunityService gestioneCommunity;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IscrizioneCommunityServlet(GestioneCommunityService gestioneCommunity) {this.gestioneCommunity = gestioneCommunity;}
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
 
         UtenteBean utente = (UtenteBean) request.getSession().getAttribute("utente");

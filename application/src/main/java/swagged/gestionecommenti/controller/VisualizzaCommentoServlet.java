@@ -14,9 +14,11 @@ import java.sql.SQLException;
 @WebServlet("/visualizzaCommento")
 public class VisualizzaCommentoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final GestioneCommentiService gestioneCommenti = new GestioneCommentiServiceImpl();
+    private GestioneCommentiService gestioneCommenti;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public VisualizzaCommentoServlet(GestioneCommentiServiceImpl gestioneCommenti) {this.gestioneCommenti = gestioneCommenti;}
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int postId = Integer.parseInt(request.getParameter("id"));
         try {
             gestioneCommenti.visualizza(postId);

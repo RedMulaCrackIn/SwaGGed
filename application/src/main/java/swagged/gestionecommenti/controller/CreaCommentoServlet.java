@@ -15,9 +15,11 @@ import java.sql.SQLException;
 @WebServlet("/creaCommento")
 public class CreaCommentoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final GestioneCommentiService gestioneCommenti = new GestioneCommentiServiceImpl();
+    private GestioneCommentiService gestioneCommenti;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public CreaCommentoServlet(GestioneCommentiServiceImpl gestioneCommenti) {this.gestioneCommenti = gestioneCommenti;}
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UtenteBean utente = (UtenteBean) request.getSession().getAttribute("utente");
         String email = utente.getEmail();
         int postId = Integer.parseInt(request.getParameter("postId"));

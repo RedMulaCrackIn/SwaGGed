@@ -14,8 +14,12 @@ import java.sql.SQLException;
 
 @WebServlet("/registrazione")
 public class RegistrazioneServlet extends HttpServlet {
+    private GestioneUtentiServiceImpl gestioneUtenti;
+    public void setGestioneUtentiService(GestioneUtentiServiceImpl gestioneUtenti) {
+        this.gestioneUtenti = gestioneUtenti;
+    }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UtenteDAO dbUtenti = new UtenteDAO();
         GestioneUtentiServiceImpl gestioneUtenti = new GestioneUtentiServiceImpl();

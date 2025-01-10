@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import swagged.gestioneutenti.services.GestioneUtentiService;
 import swagged.gestioneutenti.services.GestioneUtentiServiceImpl;
 import swagged.model.bean.UtenteBean;
 import swagged.model.dao.UtenteDAO;
@@ -17,9 +18,13 @@ import java.util.List;
 public class CercaUtenteServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
-    private static final GestioneUtentiServiceImpl gestioneUtenti = new GestioneUtentiServiceImpl();
+    private GestioneUtentiService gestioneUtenti; // non statico
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    // Costruttore per iniezione di dipendenze (usato nel test)
+    public CercaUtenteServlet(GestioneUtentiService gestioneUtenti) {
+        this.gestioneUtenti = gestioneUtenti;
+    }
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String substring = request.getParameter("substring");
         List<UtenteBean> risultati = null;
         try {

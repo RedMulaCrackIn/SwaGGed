@@ -19,9 +19,11 @@ import java.sql.SQLException;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 50)
 public class CreaPostServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final GestionePostService gestionePost = new GestionePostServiceImpl();
+    private GestionePostService gestionePost;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public CreaPostServlet(GestionePostServiceImpl gestionePost) {this.gestionePost = gestionePost;}
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String titolo = request.getParameter("titolo");
         String corpo = request.getParameter("corpo");

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import swagged.gestioneutenti.services.GestioneUtentiService;
 import swagged.gestioneutenti.services.GestioneUtentiServiceImpl;
 import swagged.model.bean.UtenteBean;
 import swagged.model.dao.UtenteDAO;
@@ -19,9 +20,13 @@ import java.sql.SQLException;
 public class ModificaImmagineServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
-    private static final GestioneUtentiServiceImpl gestioneUtenti = new GestioneUtentiServiceImpl();
+    private GestioneUtentiService gestioneUtenti; // non statico
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    // Costruttore per iniezione di dipendenze (usato nel test)
+    public ModificaImmagineServlet(GestioneUtentiService gestioneUtenti) {
+        this.gestioneUtenti = gestioneUtenti;
+    }
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UtenteBean utente = (UtenteBean) request.getSession().getAttribute("utente");
         Part filePart = request.getPart("immagine");
         try {

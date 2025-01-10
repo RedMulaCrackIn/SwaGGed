@@ -27,10 +27,10 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
 
     @Override
     public boolean ban(String email) throws SQLException {
-        if (email == null || email.isEmpty() || utenteDAO.getByEmail(email) == null)
+        UtenteBean utente = utenteDAO.getByEmail(email);
+        if (email == null || email.isEmpty() || utente == null)
             return false;
 
-        UtenteBean utente = utenteDAO.getByEmail(email);
 
         if (utente != null) {
             utente.setBandito(true);

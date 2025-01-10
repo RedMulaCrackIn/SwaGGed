@@ -14,9 +14,13 @@ import java.sql.SQLException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private static final GestioneUtentiService gestioneUtenti = new GestioneUtentiServiceImpl();
+    private GestioneUtentiService gestioneUtenti; // non statico
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    // Costruttore per iniezione di dipendenze (usato nel test)
+    public LoginServlet(GestioneUtentiService gestioneUtenti) {
+        this.gestioneUtenti = gestioneUtenti;
+    }
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");

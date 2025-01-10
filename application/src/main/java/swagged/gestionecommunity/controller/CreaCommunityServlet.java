@@ -16,9 +16,11 @@ import java.sql.SQLException;
 @WebServlet("/creaCommunity")
 public class CreaCommunityServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final GestioneCommunityService gestioneCommunity = new GestioneCommunityServiceImpl();
+    private GestioneCommunityService gestioneCommunity;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public CreaCommunityServlet(GestioneCommunityServiceImpl gestioneCommunity) {this.gestioneCommunity = gestioneCommunity;}
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         String nome = request.getParameter("communityNomeCreazione");
         String descrizione = request.getParameter("descrizione");
