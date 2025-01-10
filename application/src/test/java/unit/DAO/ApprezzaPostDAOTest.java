@@ -1,8 +1,5 @@
 package unit.DAO;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 import swagged.model.bean.ApprezzaPostBean;
@@ -10,141 +7,196 @@ import swagged.model.dao.ApprezzaPostDAO;
 import swagged.utils.DriverManagerConnectionPool;
 
 import java.sql.*;
-import java.util.*;
+import java.util.List;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ApprezzaPostDAOTest {
 
     @Mock
-    private PreparedStatement preparedStatement;
+    private Connection connection;  // Mock della connessione
 
     @Mock
-    private ResultSet resultSet;
+    private PreparedStatement preparedStatement;  // Mock del PreparedStatement
 
     @Mock
-    private Connection connection;
+    private ResultSet resultSet;  // Mock del ResultSet
+
+    @Mock
+    private ApprezzaPostBean apprezzaPostBean;  // Mock del ApprezzaPostBean
 
     private ApprezzaPostDAO apprezzaPostDAO;
-    private ApprezzaPostBean apprezzaPostBean;
+    private MockedStatic<DriverManagerConnectionPool> mockedDriverManagerConnectionPool;
 
     @BeforeEach
-    public void setUp() throws SQLException {
-        MockitoAnnotations.openMocks(this); // Inizializza i mock
+    void setUp() throws SQLException {
+        MockitoAnnotations.openMocks(this);  // Inizializzazione dei mock
+        apprezzaPostDAO = new ApprezzaPostDAO();  // Istanza della DAO
 
-        // Mock del metodo statico DriverManagerConnectionPool.getConnection()
-        try (MockedStatic<DriverManagerConnectionPool> mockedStatic = mockStatic(DriverManagerConnectionPool.class)) {
-            mockedStatic.when(DriverManagerConnectionPool::getConnection).thenReturn(connection);
+        // Mock dei metodi statici
+        mockedDriverManagerConnectionPool = mockStatic(DriverManagerConnectionPool.class);
 
-            // Crea un'istanza di ApprezzaPostDAO
-            apprezzaPostDAO = new ApprezzaPostDAO();
-        }
+        // Mocking del comportamento di getConnection() e releaseConnection()
+        when(DriverManagerConnectionPool.getConnection()).thenReturn(connection);
+        doNothing().when(DriverManagerConnectionPool.class);
+        DriverManagerConnectionPool.releaseConnection(connection);
+    }
 
-        // Imposta un ApprezzaPostBean di esempio
-        apprezzaPostBean = new ApprezzaPostBean();
-        apprezzaPostBean.setUtenteEmail("test@example.com");
-        apprezzaPostBean.setPostId(1);
+    @AfterEach
+    void tearDown() {
+        // Rilascia il mock statico
+        mockedDriverManagerConnectionPool.close();
     }
 
     @Test
-    public void testSave() throws SQLException {
-        try (MockedStatic<DriverManagerConnectionPool> mockedStatic = mockStatic(DriverManagerConnectionPool.class)) {
-            // Mocka la connessione e la preparazione della query
-            Connection mockConnection = mock(Connection.class);
-            mockedStatic.when(DriverManagerConnectionPool::getConnection).thenReturn(mockConnection);
-            when(mockConnection.prepareStatement(anyString())).thenReturn(preparedStatement);
-            when(preparedStatement.executeUpdate()).thenReturn(1); // Simula successo
+    void testSave_Success() throws SQLException {
+        // Configura il comportamento del mock ApprezzaPostBean
+        when(apprezzaPostBean.getUtenteEmail()).thenReturn("user@example.com");
+        when(apprezzaPostBean.getPostId()).thenReturn(1);
 
-            // Verifica che il metodo save() funzioni correttamente
-            boolean result = apprezzaPostDAO.save(apprezzaPostBean);
-            assertTrue(result);
-            verify(preparedStatement, times(1)).executeUpdate();
-        }
-    }
-
-    @Test
-    public void testDelete() throws SQLException {
-        try (MockedStatic<DriverManagerConnectionPool> mockedStatic = mockStatic(DriverManagerConnectionPool.class)) {
-            // Mocka la connessione e la preparazione della query
-            Connection mockConnection = mock(Connection.class);
-            mockedStatic.when(DriverManagerConnectionPool::getConnection).thenReturn(mockConnection);
-            when(mockConnection.prepareStatement(anyString())).thenReturn(preparedStatement);
-            when(preparedStatement.executeUpdate()).thenReturn(1); // Simula successo
-
-            // Verifica che il metodo delete() funzioni correttamente
-            boolean result = apprezzaPostDAO.delete("test@example.com", 1);
-            assertTrue(result);
-            verify(preparedStatement, times(1)).executeUpdate();
-        }
-    }
-
-
-
-    @Test
-    public void testGetByKey_NotFound() throws SQLException {
-        // Mock del comportamento del PreparedStatement e ResultSet
+        // Mock di PreparedStatement
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(false); // Simula che non ci siano risultati
+        when(preparedStatement.executeUpdate()).thenReturn(1);  // Simula successo dell'inserimento
 
-        // Verifica che il metodo getByKey restituisca null quando non trova dati
-        ApprezzaPostBean result = apprezzaPostDAO.getByKey("test@example.com", 1);
-        assertNull(result);
+        // Chiamata al metodo save
+        boolean result = apprezzaPostDAO.save(apprezzaPostBean);
+
+        // Verifica che il risultato sia true (operazione riuscita)
+        assertTrue(result, "Il salvataggio dovrebbe restituire true");
+
+        // Verifica che i metodi statici siano stati chiamati correttamente
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.getConnection(), times(1));
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.releaseConnection(connection), times(1));
     }
+
     @Test
-    public void testGetByKey_Success() throws SQLException {
-        // Mock del PreparedStatement e del ResultSet
+    void testSave_Failure() throws SQLException {
+        // Configura il comportamento del mock ApprezzaPostBean
+        when(apprezzaPostBean.getUtenteEmail()).thenReturn("user@example.com");
+        when(apprezzaPostBean.getPostId()).thenReturn(1);
+
+        // Mock di PreparedStatement
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(preparedStatement.executeUpdate()).thenReturn(0);  // Simula fallimento dell'inserimento
 
-        // Mock del ResultSet per restituire una riga
-        when(resultSet.next()).thenReturn(true).thenReturn(false); // Una riga, poi fine del result set
+        // Chiamata al metodo save
+        boolean result = apprezzaPostDAO.save(apprezzaPostBean);
 
-        // Mock delle colonne nel ResultSet
-        when(resultSet.getString("utenteEmail")).thenReturn("test@example.com");
+        // Verifica che il risultato sia false (operazione fallita)
+        assertFalse(result, "Il salvataggio dovrebbe restituire false quando non vengono inserite righe");
+
+        // Verifica che i metodi statici siano stati chiamati correttamente
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.getConnection(), times(1));
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.releaseConnection(connection), times(1));
+    }
+
+    @Test
+    void testDelete_Success() throws SQLException {
+        // Configura il comportamento dei parametri
+        String email = "user@example.com";
+        int postId = 1;
+
+        // Mock di PreparedStatement
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeUpdate()).thenReturn(1);  // Simula successo della cancellazione
+
+        // Chiamata al metodo delete
+        boolean result = apprezzaPostDAO.delete(email, postId);
+
+        // Verifica che il risultato sia true (operazione riuscita)
+        assertTrue(result, "La cancellazione dovrebbe restituire true");
+
+        // Verifica che i metodi statici siano stati chiamati correttamente
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.getConnection(), times(1));
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.releaseConnection(connection), times(1));
+    }
+
+    @Test
+    void testDelete_Failure() throws SQLException {
+        // Configura il comportamento dei parametri
+        String email = "user@example.com";
+        int postId = 1;
+
+        // Mock di PreparedStatement
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeUpdate()).thenReturn(0);  // Simula fallimento della cancellazione
+
+        // Chiamata al metodo delete
+        boolean result = apprezzaPostDAO.delete(email, postId);
+
+        // Verifica che il risultato sia false (operazione fallita)
+        assertFalse(result, "La cancellazione dovrebbe restituire false quando non vengono eliminate righe");
+
+        // Verifica che i metodi statici siano stati chiamati correttamente
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.getConnection(), times(1));
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.releaseConnection(connection), times(1));
+    }
+
+    @Test
+    void testGetByKey_Success() throws SQLException {
+        // Configura il comportamento del mock ResultSet
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getString("utenteEmail")).thenReturn("user@example.com");
         when(resultSet.getInt("postId")).thenReturn(1);
 
-        // Chiamata al metodo da testare
-        ApprezzaPostBean result = apprezzaPostDAO.getByKey("test@example.com", 1);
-
-        // Verifica del risultato
-        assertNotNull(result);  // Assicura che il risultato non sia null
-        assertEquals("test@example.com", result.getUtenteEmail());
-        assertEquals(1, result.getPostId());
-    }
-
-    @Test
-    public void testGetByEmail() throws SQLException {
-        // Mock del PreparedStatement e del ResultSet
+        // Mock di PreparedStatement
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
 
-        // Mock del ResultSet per restituire due righe
-        when(resultSet.next()).thenReturn(true)  // Prima riga
-                .thenReturn(true)  // Seconda riga
-                .thenReturn(false); // Fine delle righe
+        // Chiamata al metodo getByKey
+        ApprezzaPostBean result = apprezzaPostDAO.getByKey("user@example.com", 1);
 
-        // Mock delle colonne nel ResultSet per le due righe
-        when(resultSet.getString("utenteEmail")).thenReturn("test@example.com")
-                .thenReturn("test2@example.com");
-        when(resultSet.getInt("postId")).thenReturn(1)
-                .thenReturn(2);
+        // Verifica che l'oggetto restituito sia corretto
+        assertNotNull(result, "getByKey dovrebbe restituire un oggetto valido");
+        assertEquals("user@example.com", result.getUtenteEmail(), "L'email dovrebbe corrispondere");
+        assertEquals(1, result.getPostId(), "Il postId dovrebbe corrispondere");
 
-        // Chiamata al metodo da testare
-        List<ApprezzaPostBean> result = apprezzaPostDAO.getByEmail("test@example.com");
-
-        // Verifica del risultato
-        assertNotNull(result);  // Assicura che il risultato non sia null
-        assertEquals(2, result.size());  // Assicura che ci siano 2 risultati
-
-        // Verifica del primo post
-        ApprezzaPostBean post1 = result.get(0);
-        assertEquals("test@example.com", post1.getUtenteEmail());
-        assertEquals(1, post1.getPostId());
-
-        // Verifica del secondo post
-        ApprezzaPostBean post2 = result.get(1);
-        assertEquals("test2@example.com", post2.getUtenteEmail());
-        assertEquals(2, post2.getPostId());
+        // Verifica che i metodi statici siano stati chiamati correttamente
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.getConnection(), times(1));
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.releaseConnection(connection), times(1));
     }
 
+    @Test
+    void testGetByKey_NotFound() throws SQLException {
+        // Configura il comportamento del mock ResultSet
+        when(resultSet.next()).thenReturn(false);  // Nessun risultato trovato
 
+        // Mock di PreparedStatement
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+
+        // Chiamata al metodo getByKey
+        ApprezzaPostBean result = apprezzaPostDAO.getByKey("user@example.com", 1);
+
+        // Verifica che il risultato sia null
+        assertNull(result, "getByKey dovrebbe restituire null se non trova il record");
+
+        // Verifica che i metodi statici siano stati chiamati correttamente
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.getConnection(), times(1));
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.releaseConnection(connection), times(1));
+    }
+
+    @Test
+    void testGetByEmail_Success() throws SQLException {
+        // Configura il comportamento del mock ResultSet
+        when(resultSet.next()).thenReturn(true).thenReturn(false);
+        when(resultSet.getString("utenteEmail")).thenReturn("user@example.com");
+        when(resultSet.getInt("postId")).thenReturn(1);
+
+        // Mock di PreparedStatement
+        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+
+        // Chiamata al metodo getByEmail
+        List<ApprezzaPostBean> result = apprezzaPostDAO.getByEmail("user@example.com");
+
+        // Verifica che la lista restituita contenga il post
+        assertNotNull(result, "getByEmail dovrebbe restituire una lista valida");
+        assertEquals(1, result.size(), "La lista dovrebbe contenere 1 elemento");
+
+        // Verifica che i metodi statici siano stati chiamati correttamente
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.getConnection(), times(1));
+        mockedDriverManagerConnectionPool.verify(() -> DriverManagerConnectionPool.releaseConnection(connection), times(1));
+    }
 }
