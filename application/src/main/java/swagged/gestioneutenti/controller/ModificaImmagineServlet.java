@@ -34,15 +34,20 @@ public class ModificaImmagineServlet extends HttpServlet
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UtenteBean utente = (UtenteBean) request.getSession().getAttribute("utente");
         Part filePart = request.getPart("immagine");
+        boolean success = false;
         try {
-            gestioneUtenti.modificaImmagine(utente, filePart, this);
+            success = gestioneUtenti.modificaImmagine(utente, filePart, this);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        request.setAttribute("utente", utente);
-        if(request.getContextPath().contains("/common")){
-            response.sendRedirect("../homepage.jsp");
+
+        if (success) {
+            request.setAttribute("utente", utente);
+            if (request.getContextPath().contains("/common")) {
+                response.sendRedirect("../homepage.jsp");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/homepage.jsp");
+            }
         }
-        response.sendRedirect(request.getContextPath() + "/homepage.jsp");
     }
 }
