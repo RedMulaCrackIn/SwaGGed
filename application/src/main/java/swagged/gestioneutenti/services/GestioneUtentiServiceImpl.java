@@ -46,30 +46,37 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
         if (filePart == null || utente == null)
             return false;
 
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        String applicationPath = servlet.getServletContext().getRealPath("");
+        String relativeFileName = null;
+        if (filePart != null && filePart.getSubmittedFileName() != null && !filePart.getSubmittedFileName().isEmpty()) {
+            if (!isImageFile(filePart)) {
+                return false;
+            }
 
-        String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            String applicationPath = servlet.getServletContext().getRealPath("");
 
-        File uploadDir = new File(uploadFilePath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
+            String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
+
+            File uploadDir = new File(uploadFilePath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+            String sanitizedFileName = fileName.replaceAll("\\s+", "_");
+            String filePath = uploadFilePath + File.separator + sanitizedFileName;
+            File file = new File(filePath);
+            while (file.exists()) {
+                String uniqueID = UUID.randomUUID().toString();
+                sanitizedFileName = uniqueID + "_" + sanitizedFileName;
+                filePath = uploadFilePath + File.separator + sanitizedFileName;
+                file = new File(filePath);
+            }
+            try {
+                Files.copy(filePart.getInputStream(), Paths.get(filePath));
+            } catch (IOException e) {
+                return false;
+            }
+            relativeFileName = sanitizedFileName;
         }
-        String sanitizedFileName = fileName.replaceAll("\\s+", "_");
-        String filePath = uploadFilePath + File.separator + sanitizedFileName;
-        File file = new File(filePath);
-        while (file.exists()) {
-            String uniqueID = UUID.randomUUID().toString();
-            sanitizedFileName = uniqueID + "_" + sanitizedFileName;
-            filePath = uploadFilePath + File.separator + sanitizedFileName;
-            file = new File(filePath);
-        }
-        try {
-            Files.copy(filePart.getInputStream(), Paths.get(filePath));
-        } catch (IOException e) {
-            return false;
-        }
-        String relativeFileName = sanitizedFileName;
 
         utente.setImmagine(relativeFileName);
 
@@ -92,11 +99,6 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
 
         UtenteBean utente = utenteDAO.getByUsername(username);
         return utente != null;
-    }
-
-    private boolean isImageFile(Part filePart) {
-        String contentType = filePart.getContentType();
-        return contentType != null && (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/gif") || contentType.equals("image/jpg"));
     }
 
     public UtenteBean visualizza(String username) throws SQLException {
@@ -181,7 +183,10 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
         return nuovoUtente;
     }
 
-
+    private boolean isImageFile(Part filePart) {
+        String contentType = filePart.getContentType();
+        return contentType != null && (contentType.equals("image/jpeg") || contentType.equals("image/png") || contentType.equals("image/gif") || contentType.equals("image/jpg"));
+    }
 }
 
 

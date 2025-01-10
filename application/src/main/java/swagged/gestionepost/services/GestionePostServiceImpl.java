@@ -80,7 +80,6 @@ public class GestionePostServiceImpl implements GestionePostService {
         }
     }
 
-
     @Override
     public boolean remove(int id, UtenteBean utente) throws SQLException {
         if(postDAO.getById(id) == null)
@@ -95,7 +94,6 @@ public class GestionePostServiceImpl implements GestionePostService {
         return postDAO.delete(id);
     }
 
-
     @Override
     public List<PostBean> cerca(String substring) throws SQLException {
         if(substring.isEmpty())
@@ -103,7 +101,6 @@ public class GestionePostServiceImpl implements GestionePostService {
 
         return postDAO.getByTitleSubstring(substring);
     }
-
 
     @Override
     public PostBean like(UtenteBean utente, int postId) throws SQLException {
@@ -139,7 +136,6 @@ public class GestionePostServiceImpl implements GestionePostService {
                 return null;
         }
     }
-
 
     @Override
     public PostBean visualizza(int id) throws SQLException{
