@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DriverManagerConnectionPool {
+
+
     private static List<Connection> freeDbConnections;
 
     static {
