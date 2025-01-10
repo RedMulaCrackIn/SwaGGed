@@ -19,6 +19,8 @@ public class UtenteBean implements Serializable, Bean {
     private List<CommunityBean> communityCreate;
     private List<IscrivitiCommunityBean> communityIscritto;
 
+    
+
     public UtenteBean() {
         this.email = "";
         this.username = "";
