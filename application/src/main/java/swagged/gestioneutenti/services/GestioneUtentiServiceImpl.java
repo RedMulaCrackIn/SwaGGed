@@ -14,8 +14,16 @@ import java.util.List;
 import java.util.UUID;
 
 public class GestioneUtentiServiceImpl implements GestioneUtentiService {
-    private UtenteDAO utenteDAO = new UtenteDAO();
+    private UtenteDAO utenteDAO;
     private static final String UPLOAD_DIR = "assets/images/pfp";
+
+    public GestioneUtentiServiceImpl() {
+        this.utenteDAO = new UtenteDAO();
+    }
+
+    public GestioneUtentiServiceImpl(UtenteDAO utenteDAOMock) {
+        this.utenteDAO = utenteDAOMock;
+    }
 
     @Override
     public boolean ban(String email) throws SQLException {
@@ -113,7 +121,7 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
 
     @Override
     public UtenteBean login(String username, String password) throws SQLException {
-        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+        if (username == null || username.isEmpty() || password == null || password.isEmpty() || utenteDAO.getByUsername(username) == null) {
             return null;
         }
 
@@ -148,7 +156,7 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
     @Override
     public UtenteBean registrazione(String email, String username, String password, String passwordCheck) throws SQLException {
         if (email == null || email.isEmpty() || username == null || username.isEmpty() ||
-                password == null || password.isEmpty() || passwordCheck == null || passwordCheck.isEmpty()) {
+                password == null || password.isEmpty() || passwordCheck == null || passwordCheck.isEmpty() || utenteDAO.getByEmail(email) != null || utenteDAO.getByUsername(username) != null) {
             return null;
         }
 
