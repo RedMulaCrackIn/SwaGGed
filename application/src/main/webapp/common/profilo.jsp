@@ -102,7 +102,7 @@
                                                     class="ri-close-fill"></i></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="creaCommunity" method="post" id="creaCommunity">
+                                            <form action="../creaCommunity" method="post" id="creaCommunity">
                                                 <input type="hidden" name="mode" value="create">
                                                 <div class="form-group">
                                                     <label class="form-label" for="communityNomeCreazione">Nome
@@ -138,7 +138,7 @@
                                                     class="ri-close-fill"></i></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="modificaImmagineUtente" method="post" enctype="multipart/form-data">
+                                            <form action="../modificaImmagineUtente" method="post" enctype="multipart/form-data">
                                                 <input type="hidden" name="mode" value="modificaImmagine">
                                                 <div class="form-group">
                                                     <label for="immagine" class="form-label custom-file-input">Inserisci

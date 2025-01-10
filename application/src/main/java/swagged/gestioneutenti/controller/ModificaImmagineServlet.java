@@ -30,6 +30,9 @@ public class ModificaImmagineServlet extends HttpServlet
             throw new RuntimeException(e);
         }
         request.setAttribute("utente", utente);
+        if(request.getContextPath().contains("/common")){
+            response.sendRedirect("../homepage.jsp");
+        }
         response.sendRedirect(request.getContextPath() + "/homepage.jsp");
     }
 }
