@@ -16,9 +16,11 @@ import java.util.List;
 @WebServlet("/cercaPost")
 public class CercaPostServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final GestionePostService gestionePost = new GestionePostServiceImpl();
+    private GestionePostService gestionePost;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public CercaPostServlet(GestionePostServiceImpl gestionePost) {this.gestionePost = gestionePost;}
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String substring = request.getParameter("substring");
         List<PostBean> risultati = null;
