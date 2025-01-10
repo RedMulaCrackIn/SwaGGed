@@ -17,7 +17,13 @@ public class VisualizzaPostServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private GestionePostService gestionePost;
 
-    public VisualizzaPostServlet(GestionePostServiceImpl gestionePost) {this.gestionePost = gestionePost;}
+    public VisualizzaPostServlet(GestionePostServiceImpl gestionePost) {
+        this.gestionePost = gestionePost;
+    }
+
+    public VisualizzaPostServlet() {
+        this.gestionePost = new GestionePostServiceImpl();
+    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -21,7 +21,13 @@ public class CreaPostServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private GestionePostService gestionePost;
 
-    public CreaPostServlet(GestionePostServiceImpl gestionePost) {this.gestionePost = gestionePost;}
+    public CreaPostServlet(GestionePostServiceImpl gestionePost) {
+        this.gestionePost = gestionePost;
+    }
+
+    public CreaPostServlet() {
+        this.gestionePost = new GestionePostServiceImpl();
+    }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

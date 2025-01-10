@@ -18,7 +18,13 @@ public class LikePostServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private GestionePostService gestionePost;
 
-    public LikePostServlet(GestionePostServiceImpl gestionePost) {this.gestionePost = gestionePost;}
+    public LikePostServlet(GestionePostServiceImpl gestionePost) {
+        this.gestionePost = gestionePost;
+    }
+
+    public LikePostServlet() {
+        this.gestionePost = new GestionePostServiceImpl();
+    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

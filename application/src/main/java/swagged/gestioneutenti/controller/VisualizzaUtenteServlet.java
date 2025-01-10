@@ -23,6 +23,11 @@ public class VisualizzaUtenteServlet extends HttpServlet
     public VisualizzaUtenteServlet(GestioneUtentiService gestioneUtenti) {
         this.gestioneUtenti = gestioneUtenti;
     }
+
+    public VisualizzaUtenteServlet() {
+        this.gestioneUtenti = new GestioneUtentiServiceImpl();
+    }
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         String username = request.getParameter("username");

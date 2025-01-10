@@ -22,6 +22,11 @@ public class CheckUsernameUtenteServlet extends HttpServlet
     public CheckUsernameUtenteServlet(GestioneUtentiService gestioneUtenti) {
         this.gestioneUtenti = gestioneUtenti;
     }
+
+    public CheckUsernameUtenteServlet() {
+        this.gestioneUtenti = new GestioneUtentiServiceImpl();
+    }
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
         String username = request.getParameter("username");

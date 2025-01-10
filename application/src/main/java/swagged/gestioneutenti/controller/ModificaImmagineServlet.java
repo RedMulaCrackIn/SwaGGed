@@ -26,6 +26,11 @@ public class ModificaImmagineServlet extends HttpServlet
     public ModificaImmagineServlet(GestioneUtentiService gestioneUtenti) {
         this.gestioneUtenti = gestioneUtenti;
     }
+
+    public ModificaImmagineServlet() {
+        this.gestioneUtenti = new GestioneUtentiServiceImpl();
+    }
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UtenteBean utente = (UtenteBean) request.getSession().getAttribute("utente");
         Part filePart = request.getPart("immagine");

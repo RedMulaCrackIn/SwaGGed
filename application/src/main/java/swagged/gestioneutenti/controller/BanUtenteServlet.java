@@ -14,8 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @WebServlet("/banUtente")
-public class BanUtenteServlet extends HttpServlet
-{
+public class BanUtenteServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private GestioneUtentiService gestioneUtenti; // non statico
 
@@ -23,6 +22,11 @@ public class BanUtenteServlet extends HttpServlet
     public BanUtenteServlet(GestioneUtentiService gestioneUtenti) {
         this.gestioneUtenti = gestioneUtenti;
     }
+
+    public BanUtenteServlet(){
+        this.gestioneUtenti = new GestioneUtentiServiceImpl();
+    }
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UtenteDAO utenteDAO = new UtenteDAO();
 

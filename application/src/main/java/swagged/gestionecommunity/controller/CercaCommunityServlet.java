@@ -20,7 +20,13 @@ public class CercaCommunityServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private GestioneCommunityService gestioneCommunity;
 
-    public CercaCommunityServlet(GestioneCommunityServiceImpl gestioneCommunity) { this.gestioneCommunity = gestioneCommunity; }
+    public CercaCommunityServlet(GestioneCommunityServiceImpl gestioneCommunity) {
+        this.gestioneCommunity = gestioneCommunity;
+    }
+
+    public CercaCommunityServlet() {
+        this.gestioneCommunity = new GestioneCommunityServiceImpl();
+    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
