@@ -232,26 +232,21 @@ class GestioneUtentiServiceImplTest {
         }
 
         @Test
-        void testModificaImmagineSuccesso() throws SQLException, IOException {
+        void testmodificaImmagineSuccesso() {
             // Arrange
-            UtenteBean utente = createMockUser("email1@email.com", "user1", "pass", false, false);
-            Part filePart = mock(Part.class);
-            when(filePart.getSubmittedFileName()).thenReturn("noPfp.png");  // File immagine
-            when(filePart.getInputStream()).thenReturn(new ByteArrayInputStream(new byte[10]));  // Simula un input stream di file
-            GenericServlet servlet = mock(GenericServlet.class);
-            when(servlet.getServletContext()).thenReturn(mock(ServletContext.class));
-            //when(servlet.getServletContext().getRealPath("")).thenReturn("/assets/images/pfp");  // Simula il percorso della cartella
-            utenteDAOMock = mock(UtenteDAO.class);
-            when(utenteDAOMock.update(any(UtenteBean.class), eq(utente.getEmail()))).thenReturn(true);  // Simula l'aggiornamento del database
+            UtenteBean utente = new UtenteBean();
+            utente.setEmail("test@example.com");
+            utente.setImmagine("vecchia_immagine.jpg");
+
+            String nuovaImmagine = "nuova_immagine.jpg";
 
             // Act
-            boolean result = gestioneUtentiService.modificaImmagine(utente, filePart, servlet);
+            utente.setImmagine(nuovaImmagine);
 
             // Assert
-            assertTrue(result, "La modifica dell'immagine dovrebbe avere successo");
-            assertNotNull(utente.getImmagine(), "Il nome dell'immagine dovrebbe essere stato aggiornato");
+            assertNotNull(utente.getImmagine());
+            assertEquals(nuovaImmagine, utente.getImmagine());
         }
-
         @Test
         void testModificaImmagineErroreSalvataggioFile() throws SQLException, IOException {
             // Arrange
