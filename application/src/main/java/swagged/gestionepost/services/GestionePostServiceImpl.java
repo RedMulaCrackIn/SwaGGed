@@ -16,11 +16,31 @@ import java.util.UUID;
 
 public class GestionePostServiceImpl implements GestionePostService {
     private static final String UPLOAD_DIR = "assets/images/post";
-    private PostDAO postDAO = new PostDAO();
-    private UtenteDAO utenteDAO = new UtenteDAO();
-    private CommunityDAO communityDAO = new CommunityDAO();
-    private ApprezzaPostDAO apprezzaPostDAO = new ApprezzaPostDAO();
-    private CommentoDAO commentoDAO = new CommentoDAO();
+    private PostDAO postDAO;
+    private UtenteDAO utenteDAO;
+    private CommunityDAO communityDAO;
+    private ApprezzaPostDAO apprezzaPostDAO;
+    private CommentoDAO commentoDAO;
+
+    // Costruttore di default
+    public GestionePostServiceImpl() {
+        this.postDAO = new PostDAO();
+        this.utenteDAO = new UtenteDAO();
+        this.communityDAO = new CommunityDAO();
+        this.apprezzaPostDAO = new ApprezzaPostDAO();
+        this.commentoDAO = new CommentoDAO();
+    }
+
+    // Costruttore con i DAO passati come parametri (utilizzato per i test con mock)
+    public GestionePostServiceImpl(PostDAO postDAOMock, UtenteDAO utenteDAOMock,
+                                   CommunityDAO communityDAOMock, ApprezzaPostDAO apprezzaPostDAOMock,
+                                   CommentoDAO commentoDAOMock) {
+        this.postDAO = postDAOMock;
+        this.utenteDAO = utenteDAOMock;
+        this.communityDAO = communityDAOMock;
+        this.apprezzaPostDAO = apprezzaPostDAOMock;
+        this.commentoDAO = commentoDAOMock;
+    }
 
     @Override
     public PostBean create(String titolo, String corpo, Part filePart, UtenteBean utente, String comunityNome, GenericServlet servlet) throws SQLException {
@@ -82,10 +102,10 @@ public class GestionePostServiceImpl implements GestionePostService {
 
     @Override
     public boolean remove(int id, UtenteBean utente) throws SQLException {
-        if(postDAO.getById(id) == null)
+        PostBean post = postDAO.getById(id);  // Chiamata una sola volta
+        if (post == null)
             return false;
 
-        PostBean post = postDAO.getById(id);
         utente.remove("postCreati", post);
 
         CommunityBean community = communityDAO.getByNome(post.getCommunityNome());
@@ -139,14 +159,13 @@ public class GestionePostServiceImpl implements GestionePostService {
 
     @Override
     public PostBean visualizza(int id) throws SQLException{
-        if(postDAO.getById(id) == null)
+        PostBean post = postDAO.getById(id);
+        if(post == null)
             return null;
         List<CommentoBean> commenti = commentoDAO.getByPostId(id);
 
-        PostBean postBean = postDAO.getById(id);
-
-        postBean.setCommenti(commenti);
-        return postBean;
+        post.setCommenti(commenti);
+        return post;
     }
 
     private boolean isImageFile(Part filePart) {
