@@ -15,9 +15,11 @@ import java.sql.SQLException;
 @WebServlet("/visualizzaPost")
 public class VisualizzaPostServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final GestionePostService gestionePost = new GestionePostServiceImpl();
+    private GestionePostService gestionePost;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public VisualizzaPostServlet(GestionePostServiceImpl gestionePost) {this.gestionePost = gestionePost;}
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         PostBean post = null;
