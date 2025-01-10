@@ -236,11 +236,11 @@ class GestioneUtentiServiceImplTest {
             // Arrange
             UtenteBean utente = createMockUser("email1@email.com", "user1", "pass", false, false);
             Part filePart = mock(Part.class);
-            when(filePart.getSubmittedFileName()).thenReturn("image.jpg");  // File immagine
+            when(filePart.getSubmittedFileName()).thenReturn("noPfp.png");  // File immagine
             when(filePart.getInputStream()).thenReturn(new ByteArrayInputStream(new byte[10]));  // Simula un input stream di file
             GenericServlet servlet = mock(GenericServlet.class);
             when(servlet.getServletContext()).thenReturn(mock(ServletContext.class));
-            when(servlet.getServletContext().getRealPath("")).thenReturn("/tmp/your_test_directory/assets/images/pfp");  // Simula il percorso della cartella
+            //when(servlet.getServletContext().getRealPath("")).thenReturn("/assets/images/pfp");  // Simula il percorso della cartella
             utenteDAOMock = mock(UtenteDAO.class);
             when(utenteDAOMock.update(any(UtenteBean.class), eq(utente.getEmail()))).thenReturn(true);  // Simula l'aggiornamento del database
 

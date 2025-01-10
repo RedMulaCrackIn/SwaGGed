@@ -35,7 +35,6 @@ class GestionePostServiceTest {
         communityDAOMock = mock(CommunityDAO.class);
         apprezzaPostDAOMock = mock(ApprezzaPostDAO.class);
         commentoDAOMock = mock(CommentoDAO.class);
-
         gestionePostService = new GestionePostServiceImpl(postDAOMock, utenteDAOMock, communityDAOMock, apprezzaPostDAOMock, commentoDAOMock);
     }
 

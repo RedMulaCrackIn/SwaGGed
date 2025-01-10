@@ -15,10 +15,26 @@ import java.util.List;
 
 public class GestioneCommunityServiceImpl implements GestioneCommunityService
 {
-    private CommunityDAO communityDAO = new CommunityDAO();
-    private IscrivitiCommunityDAO iscrivitiCommunityDAO = new IscrivitiCommunityDAO();
-    private UtenteDAO utenteDAO = new UtenteDAO();
-    private PostDAO postDAO = new PostDAO();
+    private CommunityDAO communityDAO;
+    private IscrivitiCommunityDAO iscrivitiCommunityDAO;
+    private UtenteDAO utenteDAO;
+    private PostDAO postDAO;
+
+    // Costruttore vuoto (crea nuove istanze dei DAO)
+    public GestioneCommunityServiceImpl() {
+        this.communityDAO = new CommunityDAO();
+        this.iscrivitiCommunityDAO = new IscrivitiCommunityDAO();
+        this.utenteDAO = new UtenteDAO();
+        this.postDAO = new PostDAO();
+    }
+
+    // Costruttore che riceve i DAO come parametri
+    public GestioneCommunityServiceImpl(CommunityDAO communityDAO, IscrivitiCommunityDAO iscrivitiCommunityDAO, UtenteDAO utenteDAO, PostDAO postDAO) {
+        this.communityDAO = communityDAO;
+        this.iscrivitiCommunityDAO = iscrivitiCommunityDAO;
+        this.utenteDAO = utenteDAO;
+        this.postDAO = postDAO;
+    }
 
     @Override
     public CommunityBean create(String nome, String descrizione, UtenteBean utente) throws SQLException {
@@ -46,16 +62,12 @@ public class GestioneCommunityServiceImpl implements GestioneCommunityService
         if(community == null || utente == null)
             return false;
 
-        System.out.println("Prima create: " + utente.get("communityCreate"));
         utente.remove("communityCreate", community);
-        System.out.println("Dopo create: " + utente.get("communityCreate"));
 
         IscrivitiCommunityDAO iscrivitiCommunityDAO = new IscrivitiCommunityDAO();
         IscrivitiCommunityBean iscrivitiCommunityBean = iscrivitiCommunityDAO.getByKey(utente.getEmail(), community.getNome());
 
-        System.out.println("Prima iscritto: " + utente.get("communityIscritto"));
         utente.remove("communityIscritto", iscrivitiCommunityBean);
-        System.out.println("Dopo iscritto: " + utente.get("communityIscritto"));
 
         return communityDAO.delete(community.getNome());
     }
