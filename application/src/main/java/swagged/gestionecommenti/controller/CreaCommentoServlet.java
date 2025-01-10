@@ -17,7 +17,13 @@ public class CreaCommentoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private GestioneCommentiService gestioneCommenti;
 
-    public CreaCommentoServlet(GestioneCommentiServiceImpl gestioneCommenti) {this.gestioneCommenti = gestioneCommenti;}
+    public CreaCommentoServlet(GestioneCommentiServiceImpl gestioneCommenti) {
+        this.gestioneCommenti = gestioneCommenti;
+    }
+
+    public CreaCommentoServlet() {
+        this.gestioneCommenti = new GestioneCommentiServiceImpl();
+    }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UtenteBean utente = (UtenteBean) request.getSession().getAttribute("utente");

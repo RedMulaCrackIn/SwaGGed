@@ -18,7 +18,13 @@ public class CreaCommunityServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private GestioneCommunityService gestioneCommunity;
 
-    public CreaCommunityServlet(GestioneCommunityServiceImpl gestioneCommunity) {this.gestioneCommunity = gestioneCommunity;}
+    public CreaCommunityServlet(GestioneCommunityServiceImpl gestioneCommunity) {
+        this.gestioneCommunity = gestioneCommunity;
+    }
+
+    public CreaCommunityServlet() {
+        this.gestioneCommunity = new GestioneCommunityServiceImpl();
+    }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

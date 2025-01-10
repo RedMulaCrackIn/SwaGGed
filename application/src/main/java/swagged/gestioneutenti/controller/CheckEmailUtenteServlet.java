@@ -23,6 +23,9 @@ public class CheckEmailUtenteServlet extends HttpServlet
         this.gestioneUtenti = gestioneUtenti;
     }
 
+    public CheckEmailUtenteServlet() {
+        this.gestioneUtenti = new GestioneUtentiServiceImpl();
+    }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");

@@ -15,7 +15,12 @@ import java.sql.SQLException;
 @WebServlet("/registrazione")
 public class RegistrazioneServlet extends HttpServlet {
     private GestioneUtentiServiceImpl gestioneUtenti;
+
     public void setGestioneUtentiService(GestioneUtentiServiceImpl gestioneUtenti) {
+        this.gestioneUtenti = gestioneUtenti;
+    }
+
+    public RegistrazioneServlet() {
         this.gestioneUtenti = gestioneUtenti;
     }
 

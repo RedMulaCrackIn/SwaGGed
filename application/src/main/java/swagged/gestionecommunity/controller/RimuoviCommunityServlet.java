@@ -21,7 +21,13 @@ public class RimuoviCommunityServlet extends HttpServlet
     private static final long serialVersionUID = 1L;
     private GestioneCommunityService gestioneCommunity;
 
-    public RimuoviCommunityServlet(GestioneCommunityService gestioneCommunity){this.gestioneCommunity = gestioneCommunity;}
+    public RimuoviCommunityServlet(GestioneCommunityService gestioneCommunity){
+        this.gestioneCommunity = gestioneCommunity;
+    }
+
+    public RimuoviCommunityServlet() {
+        this.gestioneCommunity = new GestioneCommunityServiceImpl();
+    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

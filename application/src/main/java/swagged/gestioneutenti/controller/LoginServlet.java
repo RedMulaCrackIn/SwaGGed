@@ -20,6 +20,11 @@ public class LoginServlet extends HttpServlet {
     public LoginServlet(GestioneUtentiService gestioneUtenti) {
         this.gestioneUtenti = gestioneUtenti;
     }
+
+    public LoginServlet() {
+        this.gestioneUtenti = new GestioneUtentiServiceImpl();
+    }
+
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");

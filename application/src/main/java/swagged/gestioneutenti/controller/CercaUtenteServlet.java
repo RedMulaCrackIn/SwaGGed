@@ -24,6 +24,9 @@ public class CercaUtenteServlet extends HttpServlet
     public CercaUtenteServlet(GestioneUtentiService gestioneUtenti) {
         this.gestioneUtenti = gestioneUtenti;
     }
+
+    public CercaUtenteServlet(){this.gestioneUtenti = new GestioneUtentiServiceImpl();}
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String substring = request.getParameter("substring");
         List<UtenteBean> risultati = null;

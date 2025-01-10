@@ -18,7 +18,13 @@ public class CheckNomeCommunityServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private GestioneCommunityService gestioneCommunity;
 
-    public CheckNomeCommunityServlet(GestioneCommunityServiceImpl gestioneCommunity) {this.gestioneCommunity = gestioneCommunity;}
+    public CheckNomeCommunityServlet(GestioneCommunityServiceImpl gestioneCommunity) {
+        this.gestioneCommunity = gestioneCommunity;
+    }
+
+    public CheckNomeCommunityServlet() {
+        this.gestioneCommunity = new GestioneCommunityServiceImpl();
+    }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
