@@ -5,87 +5,96 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import swagged.gestioneutenti.controller.ModificaImmagineServlet;
-import swagged.gestioneutenti.services.GestioneUtentiServiceImpl;
 import swagged.model.bean.UtenteBean;
+import swagged.gestioneutenti.services.GestioneUtentiService;
+import swagged.gestioneutenti.controller.ModificaImmagineServlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
-class ModificaImmagineServletIT {
+public class ModificaImmagineServletIT {
 
-    private ModificaImmagineServlet modificaImmagineServlet;
+    @Mock
+    private GestioneUtentiService gestioneUtentiService;
+
+    @Mock
     private HttpServletRequest request;
+
+    @Mock
     private HttpServletResponse response;
+
+    @Mock
     private HttpSession session;
-    private GestioneUtentiServiceImpl gestioneUtentiService;
+
+    @Mock
+    private Part filePart;
+
+    @InjectMocks
+    private ModificaImmagineServlet modificaImmagineServlet;
+
+    private UtenteBean utente;
 
     @BeforeEach
-    void setUp() {
-        gestioneUtentiService = mock(GestioneUtentiServiceImpl.class);
-        modificaImmagineServlet = new ModificaImmagineServlet(gestioneUtentiService);
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
 
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
-        session = mock(HttpSession.class);
+        // Creiamo un utente di esempio
+        utente = new UtenteBean();
+        utente.setEmail("testuser@email.com");
+        utente.setUsername("TestUser");
+
+        // Mock della sessione
         when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("utente")).thenReturn(utente);
+
+        // Mock di getContextPath per evitare il NullPointerException
+        when(request.getContextPath()).thenReturn("/"); // Impostiamo un contesto valido
     }
 
     @Test
-    void testModificaImmagineSuccessfully() throws SQLException, ServletException, IOException {
-        // Dati di test
-        UtenteBean utente = new UtenteBean();
-        utente.setEmail("email1@email.com");
+    public void testModificaImmagineSuccessfully() throws ServletException, IOException, SQLException {
+        // Arrange
+        when(request.getPart("immagine")).thenReturn(filePart); // Simula il file caricato
+        when(gestioneUtentiService.modificaImmagine(utente, filePart, modificaImmagineServlet)).thenReturn(true); // Successo
 
-        // Simuliamo l'oggetto Part (l'immagine)
-        Part filePart = mock(Part.class);
-
-        // Comportamento del servizio
-        when(request.getPart("immagine")).thenReturn(filePart);
-        when(request.getSession().getAttribute("utente")).thenReturn(utente);
-
-        // Simula il comportamento del servizio di modifica immagine
-        when(gestioneUtentiService.modificaImmagine(utente, filePart, modificaImmagineServlet)).thenReturn(true);
-
-        // Verifica che il mock restituisca true
-        assertTrue(gestioneUtentiService.modificaImmagine(utente, filePart, modificaImmagineServlet));
-
-        // Chiamata alla servlet
+        // Act
         modificaImmagineServlet.doPost(request, response);
 
-        // Verifica l'interazione con il servizio
-        verify(gestioneUtentiService, times(1)).modificaImmagine(utente, filePart, modificaImmagineServlet);
-
-        // Verifica il redirect
-        verify(response, times(1)).sendRedirect(request.getContextPath() + "/homepage.jsp");
+        // Assert
+        verify(gestioneUtentiService).modificaImmagine(utente, filePart, modificaImmagineServlet);
+        verify(response).sendRedirect(Mockito.contains("/homepage.jsp")); // Verifica che il redirect avvenga correttamente
     }
 
+    @Test
+    public void testModificaImmagineFailure() throws ServletException, IOException, SQLException {
+        // Arrange
+        when(request.getPart("immagine")).thenReturn(filePart); // Simula il file caricato
+        when(gestioneUtentiService.modificaImmagine(utente, filePart, modificaImmagineServlet)).thenReturn(false); // Fallimento
+
+        // Act
+        modificaImmagineServlet.doPost(request, response);
+
+        // Assert
+        verify(gestioneUtentiService).modificaImmagine(utente, filePart, modificaImmagineServlet);
+        verify(response, never()).sendRedirect(Mockito.contains("/homepage.jsp")); // Verifica che non venga effettuato il redirect in caso di fallimento
+    }
 
     @Test
-    void testModificaImmagineWithError() throws SQLException, ServletException, IOException {
-        // Dati di test
-        UtenteBean utente = new UtenteBean();
-        utente.setEmail("utente@test.com");
+    public void testModificaImmagineSQLException() throws ServletException, IOException, SQLException {
+        // Arrange
+        when(request.getPart("immagine")).thenReturn(filePart); // Simula il file caricato
+        doThrow(new SQLException("Database error")).when(gestioneUtentiService).modificaImmagine(utente, filePart, modificaImmagineServlet);
 
-        // Simuliamo l'oggetto Part (l'immagine)
-        Part filePart = mock(Part.class);
-
-        // Simula un errore nel servizio di modifica immagine
-        doThrow(new SQLException("Errore durante la modifica dell'immagine")).when(gestioneUtentiService)
-                .modificaImmagine(utente, filePart, modificaImmagineServlet);
-
-        when(request.getPart("immagine")).thenReturn(filePart);
-        when(request.getSession().getAttribute("utente")).thenReturn(utente);
-
-        // Verifica che venga lanciata un'eccezione
-        assertThrows(RuntimeException.class, () -> {
-            modificaImmagineServlet.doPost(request, response);
-        });
+        // Act & Assert
+        assertThrows(RuntimeException.class, () -> modificaImmagineServlet.doPost(request, response));
     }
 }
