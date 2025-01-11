@@ -32,10 +32,10 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
             return false;
 
 
-        if (utente != null) {
+        if (bannato != null) {
             utente.setBandito(true);
 
-            return utenteDAO.update(utente, email);
+            return utenteDAO.update(bannato, email);
         }
         return false;
     }
