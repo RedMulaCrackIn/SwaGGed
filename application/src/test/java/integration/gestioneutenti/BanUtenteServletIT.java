@@ -3,23 +3,31 @@ package integration.gestioneutenti;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import jakarta.servlet.http.HttpSession;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import swagged.gestioneutenti.controller.BanUtenteServlet;
-import swagged.gestioneutenti.services.GestioneUtentiService;
+import org.mockito.Mockito;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import swagged.model.bean.UtenteBean;
 import swagged.model.dao.UtenteDAO;
+import swagged.gestioneutenti.services.GestioneUtentiService;
+import swagged.gestioneutenti.controller.BanUtenteServlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-class BanUtenteServletIT {
+public class BanUtenteServletIT {
 
-    private BanUtenteServlet banUtenteServlet;
+    @Mock
+    private GestioneUtentiService gestioneUtentiService;
+
+    @Mock
+    private UtenteDAO utenteDAO;
 
     @Mock
     private HttpServletRequest request;
@@ -27,55 +35,81 @@ class BanUtenteServletIT {
     @Mock
     private HttpServletResponse response;
 
-    @Mock
-    private GestioneUtentiService gestioneUtenti;
+    @InjectMocks
+    private BanUtenteServlet banUtenteServlet;
 
-    @Mock
-    private UtenteDAO utenteDAO;
+    private UtenteBean moderatore;
+    private UtenteBean utenteBannato;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
+        // Inizializzare i mock
         MockitoAnnotations.openMocks(this);
-        banUtenteServlet = new BanUtenteServlet(gestioneUtenti); // Iniezione del servizio
+
+        moderatore = new UtenteBean();
+        moderatore.setEmail("moderator@domain.com");
+        moderatore.setUsername("moderator");
+
+        utenteBannato = new UtenteBean();
+        utenteBannato.setEmail("email1@email.com");
+        utenteBannato.setUsername("user1");
+
+        // Mock HttpSession (Usiamo jakarta.servlet.http.HttpSession)
+        HttpSession sessionMock = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("utente")).thenReturn(moderatore);
     }
 
     @Test
-    void testBanUtente() throws ServletException, IOException, SQLException {
+    public void testBanUtenteSuccess() throws ServletException, IOException, SQLException {
         // Arrange
         String emailToBan = "email1@email.com";
-        UtenteBean utenteMock = new UtenteBean();
-        utenteMock.setEmail(emailToBan);
-        utenteMock.setUsername("user1");
-        UtenteBean moderatore = new UtenteBean();
-        moderatore.setAdmin(true);
-
         when(request.getParameter("utenteEmail")).thenReturn(emailToBan);
-        when(utenteDAO.getByEmail(emailToBan)).thenReturn(utenteMock);
+        when(utenteDAO.getByEmail(emailToBan)).thenReturn(utenteBannato);
+        when(gestioneUtentiService.ban(moderatore, emailToBan)).thenReturn(true);
 
         // Act
         banUtenteServlet.doGet(request, response);
 
         // Assert
-        verify(gestioneUtenti).ban(moderatore, emailToBan);
-        verify(response).sendRedirect(request.getContextPath() + "/visualizzaUtente?username=user1");
+        verify(gestioneUtentiService, times(1)).ban(moderatore, emailToBan);
+        verify(response).sendRedirect(Mockito.contains("/visualizzaUtente?username=user1"));
     }
 
     @Test
-    void testBanUtenteConEccezioneSQL() throws ServletException, IOException, SQLException {
+    public void testBanUtenteFailure() throws ServletException, IOException, SQLException {
         // Arrange
         String emailToBan = "email1@email.com";
-        UtenteBean moderatore = new UtenteBean();
-        moderatore.setAdmin(true);
-
         when(request.getParameter("utenteEmail")).thenReturn(emailToBan);
-        when(gestioneUtenti.ban(moderatore, emailToBan)).thenThrow(new SQLException("Errore nel ban dell'utente"));
+        when(utenteDAO.getByEmail(emailToBan)).thenReturn(utenteBannato);
+        doThrow(new SQLException("Database error")).when(gestioneUtentiService).ban(moderatore, emailToBan);
 
         // Act & Assert
-        try {
-            banUtenteServlet.doGet(request, response);
-        } catch (RuntimeException e) {
-            verify(gestioneUtenti).ban(moderatore, emailToBan);
-            verifyNoInteractions(response); // Non deve redirigere in caso di errore
-        }
+        assertThrows(RuntimeException.class, () -> banUtenteServlet.doGet(request, response));
+    }
+
+    @Test
+    public void testGetByEmailNotFound() throws SQLException {
+        // Arrange
+        String emailToBan = "email1@email.com";
+        when(utenteDAO.getByEmail(emailToBan)).thenReturn(null);
+
+        // Act
+        UtenteBean result = utenteDAO.getByEmail(emailToBan);
+
+        // Assert
+        assertNull(result);
+    }
+
+    @Test
+    public void testBanUtenteSQLException() throws ServletException, IOException, SQLException {
+        // Arrange
+        String emailToBan = "email1@email.com";
+        when(request.getParameter("utenteEmail")).thenReturn(emailToBan);
+        when(utenteDAO.getByEmail(emailToBan)).thenReturn(utenteBannato);
+        doThrow(new SQLException("Database error")).when(gestioneUtentiService).ban(moderatore, emailToBan);
+
+        // Act & Assert
+        assertThrows(RuntimeException.class, () -> banUtenteServlet.doGet(request, response));
     }
 }
