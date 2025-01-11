@@ -36,7 +36,10 @@ public class LoginServlet extends HttpServlet {
             if (utente != null) {
                 request.getSession().setAttribute("logged", true);
                 request.getSession().setAttribute("utente", utente);
-                response.sendRedirect(request.getContextPath() + "/homepage.jsp");
+                if(!utente.isBandito())
+                    response.sendRedirect(request.getContextPath() + "/homepage.jsp");
+                else
+                    response.sendRedirect(request.getContextPath() + "/bandito.jsp");
             } else {
                 request.getSession().setAttribute("logged", false);
                 request.getSession().setAttribute("error", "Username e/o password invalidi.");
