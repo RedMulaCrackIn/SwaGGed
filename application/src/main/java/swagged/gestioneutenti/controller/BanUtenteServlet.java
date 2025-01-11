@@ -43,7 +43,9 @@ public class BanUtenteServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        response.sendRedirect(request.getContextPath() + "/visualizzaUtente?username=" + bannato.getUsername());
-
+        if(bannato != null)
+            response.sendRedirect(request.getContextPath() + "/visualizzaUtente?username=" + bannato.getUsername());
+        else
+            response.sendRedirect(request.getContextPath() + "/error404.jsp");
     }
 }
