@@ -46,6 +46,8 @@ class BanUtenteServletIT {
         UtenteBean utenteMock = new UtenteBean();
         utenteMock.setEmail(emailToBan);
         utenteMock.setUsername("user1");
+        UtenteBean moderatore = new UtenteBean();
+        moderatore.setAdmin(true);
 
         when(request.getParameter("utenteEmail")).thenReturn(emailToBan);
         when(utenteDAO.getByEmail(emailToBan)).thenReturn(utenteMock);
@@ -54,7 +56,7 @@ class BanUtenteServletIT {
         banUtenteServlet.doGet(request, response);
 
         // Assert
-        verify(gestioneUtenti).ban(emailToBan);
+        verify(gestioneUtenti).ban(moderatore, emailToBan);
         verify(response).sendRedirect(request.getContextPath() + "/visualizzaUtente?username=user1");
     }
 
@@ -62,15 +64,17 @@ class BanUtenteServletIT {
     void testBanUtenteConEccezioneSQL() throws ServletException, IOException, SQLException {
         // Arrange
         String emailToBan = "email1@email.com";
+        UtenteBean moderatore = new UtenteBean();
+        moderatore.setAdmin(true);
 
         when(request.getParameter("utenteEmail")).thenReturn(emailToBan);
-        when(gestioneUtenti.ban(emailToBan)).thenThrow(new SQLException("Errore nel ban dell'utente"));
+        when(gestioneUtenti.ban(moderatore, emailToBan)).thenThrow(new SQLException("Errore nel ban dell'utente"));
 
         // Act & Assert
         try {
             banUtenteServlet.doGet(request, response);
         } catch (RuntimeException e) {
-            verify(gestioneUtenti).ban(emailToBan);
+            verify(gestioneUtenti).ban(moderatore, emailToBan);
             verifyNoInteractions(response); // Non deve redirigere in caso di errore
         }
     }

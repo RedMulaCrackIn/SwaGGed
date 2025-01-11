@@ -32,13 +32,14 @@ public class BanUtenteServlet extends HttpServlet {
 
         String emailToBan = request.getParameter("utenteEmail"); // The email of the user to be banned
         UtenteBean bannato = null;
+        UtenteBean moderatore = (UtenteBean) request.getSession().getAttribute("utente");
         try {
             bannato = utenteDAO.getByEmail(emailToBan);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         try {
-            gestioneUtenti.ban(emailToBan);
+            gestioneUtenti.ban(moderatore, emailToBan);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

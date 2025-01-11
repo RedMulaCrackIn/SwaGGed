@@ -26,9 +26,9 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
     }
 
     @Override
-    public boolean ban(String email) throws SQLException {
-        UtenteBean utente = utenteDAO.getByEmail(email);
-        if (email == null || email.isEmpty() || utente == null)
+    public boolean ban(UtenteBean utente, String email) throws SQLException {
+        UtenteBean bannato = utenteDAO.getByEmail(email);
+        if (email == null || email.isEmpty() || utente == null || !utente.isAdmin())
             return false;
 
 

@@ -111,12 +111,15 @@ class GestioneUtentiServiceTest {
             // Arrange
             String email = "email1@email.com";
             UtenteBean mockUtente = createMockUser(email, "user1", "pass", false, false);
+            UtenteBean moderatore = new UtenteBean();
+            moderatore.setAdmin(true);
+
 
             when(utenteDAOMock.getByEmail(email)).thenReturn(mockUtente);
             when(utenteDAOMock.update(any(UtenteBean.class), eq(email))).thenReturn(true);
 
             // Act
-            boolean result = gestioneUtentiService.ban(email);
+            boolean result = gestioneUtentiService.ban(moderatore, email);
 
             // Assert
             assertTrue(result, "Il ban dovrebbe avere successo");
@@ -127,11 +130,13 @@ class GestioneUtentiServiceTest {
         void testBanUserNotFound() throws SQLException {
             // Arrange
             String email = "nonexistent@example.com";
+            UtenteBean moderatore = new UtenteBean();
+            moderatore.setAdmin(true);
 
             when(utenteDAOMock.getByEmail(email)).thenReturn(null);
 
             // Act
-            boolean result = gestioneUtentiService.ban(email);
+            boolean result = gestioneUtentiService.ban(moderatore, email);
 
             // Assert
             assertFalse(result, "Il ban dovrebbe fallire per utente non trovato");
