@@ -31,7 +31,6 @@
     <div class="row no-gutters height-self-center">
       <div class="col-sm-12 text-center align-self-center">
         <div class="iq-error position-relative mt-5">
-
           <h2 class="mb-0 text-center">Sei stato bandito dal sito!</h2>
           <a class="btn btn-primary mt-3" href="${pageContext.request.contextPath}/logout"><i class="ri-home-4-line"></i>Logout</a>
         </div>
