@@ -10,7 +10,6 @@
 
     UtenteDAO utenteDAO = new UtenteDAO();
     UtenteBean utenteBean = null;
-
 %>
 <!doctype html>
 <html lang="en">
@@ -95,19 +94,7 @@
 
 <div class="wrapper">
     <%
-        // Controlla se il form è stato inviato
-        String type = request.getParameter("type");
-        String query = request.getParameter("query");
 
-        if (type != null && query != null && !query.trim().isEmpty()) {
-            if (type.equals("post")) {
-                response.sendRedirect(request.getContextPath() + "/cercaPost?substring=" + URLEncoder.encode(query, "UTF-8"));
-            } else if (type.equals("utente")) {
-                response.sendRedirect(request.getContextPath() + "/cercaUtente?substring=" + URLEncoder.encode(query, "UTF-8"));
-            } else if (type.equals("community")) {
-                response.sendRedirect(request.getContextPath() + "/cercaCommunitysubstring=" + URLEncoder.encode(query, "UTF-8"));
-            }
-        }
     %>
 
     <div id="content-page" class="content-page">

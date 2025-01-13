@@ -1,0 +1,160 @@
+DROP DATABASE IF EXISTS SwaGGedDB;
+CREATE DATABASE SwaGGedDB;
+USE SwaGGedDB;
+
+DROP TABLE IF EXISTS utente;
+CREATE TABLE utente (
+    email           varchar(30)     NOT NULL,
+    username        varchar(20)     NOT NULL,
+    password        varchar(64)     NOT NULL,
+    immagine        varchar(512)    NOT NULL DEFAULT "noPfp.jpg",
+    bandito         tinyint(1)      NOT NULL DEFAULT '0',
+    admin           tinyint(1)      NOT NULL DEFAULT '0',
+    PRIMARY KEY (email),
+    UNIQUE (username)
+);
+
+DROP TABLE IF EXISTS community;
+CREATE TABLE community (
+    nome            varchar(20)     NOT NULL,
+    descrizione     varchar(512)    NOT NULL DEFAULT "",
+    iscritti		int				NOT NULL DEFAULT '0',
+    utenteEmail     varchar(30)     NOT NULL,
+    PRIMARY KEY (nome),
+    FOREIGN KEY (utenteEmail) REFERENCES utente(email) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS post;
+CREATE TABLE post (
+    id              int             NOT NULL AUTO_INCREMENT,
+    titolo          varchar(50)     NOT NULL,
+    corpo           varchar(512)    DEFAULT "",
+    immagine        varchar(512)    DEFAULT "",
+    likes           int             NOT NULL DEFAULT '0',
+    dataCreazione   datetime        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    numeroCommenti	int				NOT NULL DEFAULT '0',
+    utenteEmail     varchar(30)     NOT NULL,
+    communityNome   varchar(20)     NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (utenteEmail) REFERENCES utente(email) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (communityNome) REFERENCES community(nome) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS commento;
+CREATE TABLE commento (
+    id              int             NOT NULL AUTO_INCREMENT,
+    corpo           varchar(512)    NOT NULL DEFAULT "",
+    utenteEmail     varchar(30)     NOT NULL,
+    postId          int             NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (utenteEmail) REFERENCES utente(email) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (postId) REFERENCES post(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS iscrivitiCommunity;
+CREATE TABLE iscrivitiCommunity (
+    utenteEmail     varchar(30)     NOT NULL,
+    communityNome   varchar(20)		NOT NULL,
+    PRIMARY KEY (utenteEmail, communityNome),
+    FOREIGN KEY (utenteEmail) REFERENCES utente(email) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (communityNome) REFERENCES community(nome) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS apprezzaPost;
+CREATE TABLE apprezzaPost (
+    utenteEmail     varchar(30)     NOT NULL,
+    postId          int             NOT NULL,
+    PRIMARY KEY (utenteEmail, postId),
+    FOREIGN KEY (utenteEmail) REFERENCES utente(email) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (postId) REFERENCES post(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+INSERT INTO utente (email, username, password, admin) VALUES -- Password: pass
+("fra@email.com", "Fraaa", "cGFzcw==", 0),
+("chicca@email.com", "chicca", "cGFzcw==", 0),
+("lil_yeat@email.com", "lil_yeat", "cGFzcw==", 0),
+("maxiK@email.com", "maxiK", "cGFzcw==", 1);
+
+INSERT INTO community (nome, descrizione, iscritti, utenteEmail) VALUES
+("Rappin'", "Questa community è stata creata per condividere notizie sul rap", 3,"fra@email.com"),
+("HipHopotamo", "Community scherzosa", 2,"chicca@email.com"),
+("Lil_Community", "", 1,"lil_yeat@email.com");
+
+INSERT INTO post (titolo, corpo, likes, numeroCommenti, utenteEmail, communityNome) VALUES
+("Amo il rap", "Considero che tutti gli altri generi musicali siano inutili.", 4, 3, "fra@email.com", "Rappin'"),
+("LEGGETIMI", "Hipohopotamo è uno dei migliori titolo che si possa dare a una community", 0, 1, "chicca@email.com", "HipHopotamo"),
+("Perchè nessuno condivide post?", "Dai ragazzi condividete e iscrivetevi", 0, 1, "fra@email.com", "Rappin'"),
+("Se non avete lil nel nome non parlatemi", "", 0, 0, "lil_yeat@email.com", "Lil_Community");
+
+INSERT INTO commento (corpo, utenteEmail, postId) VALUES
+("Avrei da ridire...", "chicca@email.com", 1),
+("Inutili no, però il rap è bello si.", "lil_yeat@email.com", 1),
+("Goated name", "lil_yeat@email.com", 2),
+("Io invece ti parlo", "chicca@email.com", 3);
+
+INSERT INTO iscrivitiCommunity (utenteEmail, communityNome) VALUES
+("fra@email.com", "Rappin'"),
+("chicca@email.com", "Rappin'"),
+("maxiK@email.com", "Rappin'"),
+("chicca@email.com", "HipHopotamo"),
+("lil_yeat@email.com", "Lil_Community");
+
+INSERT INTO apprezzaPost (utenteEmail, postId) VALUES
+("chicca@email.com", "1"),
+("fra@email.com", "1"),
+("maxiK@email.com", "1"),
+("lil_yeat@email.com", "1");
+
+
+
+-- Insert users into the `utente` table
+INSERT INTO utente (email, username, password, immagine, bandito, admin) VALUES
+("mattia@email.com", "mattia", "bWF0dGlh", "mattia.png", 0, 0),
+("choaib@email.com", "choaib", "Y2hvYWli", "noPfp.jpg", 0, 0),
+("kanyelover@email.com", "kanyelover", "a2FueWU=", "noPfp.jpg", 0, 0),
+("odiotutti@email.com", "odiotutti", "b2Rpb3R1dHRp", "noPfp.jpg", 1, 0),
+("divoratore@email.com", "divoratore", "ZGl2b3JhdG9yZQ==", "noPfp.jpg", 0, 0);
+
+-- Insert communities into the `community` table
+INSERT INTO community (nome, descrizione, iscritti, utenteEmail) VALUES
+("KanyeMiglioreDiTutti", "Il migliore e basta", 2, "kanyelover@email.com"),
+("Jazz è vita", "Condividiamo la nostra passione per il jazz", 1, "divoratore@email.com"),
+("Sir Carti", "WHAAA SCHYAAA", 3, "mattia@email.com"),
+("Nardo > Tutti", "Poco da dire, il GOAT", 2, "choaib@email.com");
+
+-- Insert community memberships into the `iscrivitiCommunity` table
+INSERT INTO iscrivitiCommunity (utenteEmail, communityNome) VALUES
+("mattia@email.com", "Sir Carti"),
+("mattia@email.com", "Nardo > Tutti"),
+("mattia@email.com", "KanyeMiglioreDiTutti"),
+("mattia@email.com", "HipHopotamo"),
+("choaib@email.com", "Sir Carti"),
+("choaib@email.com", "Nardo > Tutti"),
+("kanyelover@email.com", "KanyeMiglioreDiTutti"),
+("divoratore@email.com", "Jazz è vita");
+
+-- Insert posts into the `post` table
+INSERT INTO post (titolo, immagine, likes, numeroCommenti, utenteEmail, communityNome) VALUES
+("Copertina del secolo", "donda.jpg", 2, 1, "kanyelover@email.com", "KanyeMiglioreDiTutti"),
+("Dripping", "carti.jpg", 3, 3, "choaib@email.com", "Sir Carti");
+
+INSERT INTO post (titolo, corpo, likes, numeroCommenti, utenteEmail, communityNome) VALUES
+("Io amo il jazz", "Il jazz da 5 anni a questa parte mi ha cambiato la vita", 1, 0, "divoratore@email.com", "Jazz è vita"),
+("Consideraioni", "Miglior artista, producer, designer, dj", 2, 1, "mattia@email.com", "KanyeMiglioreDiTutti");
+
+INSERT INTO apprezzaPost (utenteEmail, postId) VALUES
+("mattia@email.com", 5),
+("mattia@email.com", 6),
+("mattia@email.com", 8),
+("choaib@email.com", 6),
+("kanyelover@email.com", 5),  -- Fixed typo here
+("kanyelover@email.com", 6),  -- Fixed typo here
+("kanyelover@email.com", 8),  -- Fixed typo here
+("divoratore@email.com", 7);
+
+INSERT INTO commento (corpo, utenteEmail, postId) VALUES
+("Hai ragione!", "mattia@email.com", 5),
+("Frfr", "mattia@email.com", 6),
+("Ice Ice Ice", "choaib@email.com", 6),
+("Concordo con te", "kanyelover@email.com", 8),
+("Non esisterebbe senza Kanye!", "kanyelover@email.com", 6);
