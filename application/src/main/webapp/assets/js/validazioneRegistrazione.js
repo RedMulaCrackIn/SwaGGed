@@ -35,7 +35,7 @@ $(document).ready(function(){
         if (email.match(emailValidator)) {
             $.ajax({
                 type: "POST",
-                url: "registrazione",
+                url: "checkEmailUtente",
                 data: {
                     mode: "checkEmail",
                     email: email,
@@ -83,7 +83,7 @@ $(document).ready(function(){
         if(username.match(usernameValidator)){
             $.ajax({
                 type: "POST",
-                url: "registrazione",
+                url: "checkUsernameUtente",
                 data: {
                     mode: "checkUsername",
                     username: username,

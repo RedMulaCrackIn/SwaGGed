@@ -26,18 +26,19 @@ public class CheckNomeCommunityServlet extends HttpServlet {
         this.gestioneCommunity = new GestioneCommunityServiceImpl();
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
-        UtenteBean utente = (UtenteBean) request.getSession().getAttribute("utente");
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/plain");
         String nome = request.getParameter("nome");
-        CommunityBean community = null;
-        try {
-            community = gestioneCommunity.iscrizione(utente, nome);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        request.getSession().setAttribute("utente", utente);
-        response.sendRedirect(request.getContextPath() + "/visualizzaCommunity?nome=" + community.getNome());
 
+        try {
+            if(gestioneCommunity.checkNome(nome)) {
+                response.getWriter().print("non disponibile");
+            } else {
+                response.getWriter().print("disponibile");
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

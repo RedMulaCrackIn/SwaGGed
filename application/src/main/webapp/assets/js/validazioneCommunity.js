@@ -15,9 +15,8 @@ $(document).ready(function() {
         if (communityNome.trim() !== "") {
             $.ajax({
                 type: "POST",
-                url: "community", // Il URL dove si trova la servlet o controller che gestisce la richiesta
+                url: "checkNomeCommunity", // Il URL dove si trova la servlet o controller che gestisce la richiesta
                 data: {
-                    mode: "checkNome", // Modalità per verificare il nome della community
                     nome: communityNome,
                 },
                 dataType: "html",

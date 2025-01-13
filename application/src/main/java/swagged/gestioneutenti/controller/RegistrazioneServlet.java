@@ -51,6 +51,34 @@ public class RegistrazioneServlet extends HttpServlet {
             } catch (SQLException e) {
                 throw new ServletException("Errore durante la registrazione", e);
             }
+        }  else if(mode.equals("checkEmail")) {
+            response.setContentType("text/plain");
+            String email = request.getParameter("email");
+
+            try {
+                if(gestioneUtenti.checkEmail(email)) {
+                    response.getWriter().print("non disponibile");
+                } else {
+                    response.getWriter().print("disponibile");
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else if(mode.equals("checkUsername")) {
+            response.setContentType("text/plain");
+            String username = request.getParameter("username");
+
+            try {
+                if(gestioneUtenti.checkUsername(username)) {
+                    response.getWriter().print("non disponibile");
+                } else {
+                    response.getWriter().print("disponibile");
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 }
