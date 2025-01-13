@@ -15,7 +15,13 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/vendor/font-awesome-line-awesome/css/all.min.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
-
+    <style>
+        .sign-in-logo img {
+            width: 900px; /* Imposta la larghezza a 600px */
+            height: auto; /* Mantiene il rapporto di aspetto */
+            transform: translateX(-250px); /* Sposta l'immagine 20px a sinistra */
+        }
+    </style>
 </head>
 <body class=" ">
 <!-- loader Start -->
@@ -38,7 +44,7 @@
             <div class="row no-gutters">
                 <div class="col-md-6 text-center pt-5">
                     <div class="sign-in-detail text-white">
-                        <a class="sign-in-logo mb-5" href="<%=request.getContextPath()%>/homepage.jsp"><img src="<%=request.getContextPath()%>/assets/images/logo-full.png" class="img-fluid" alt="logo"></a>
+                        <a class="sign-in-logo mb-5" href="<%=request.getContextPath()%>/homepage.jsp"><img src="<%=request.getContextPath()%>/assets/images/logo-full2.png" class="img-fluid" alt="logo"></a>
                     </div>
                 </div>
                 <div class="col-md-6 bg-white pt-5 pt-5 pb-lg-0 pb-5">
