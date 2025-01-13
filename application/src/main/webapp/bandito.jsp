@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>SwaGGed | Bandito</title>
 
-  <link rel="shortcut icon" href="<%=request.getContextPath()%>/assets/images/favicon.ico"/>
+  <link rel="icon" href="<%=request.getContextPath()%>/assets/images/favicon.ico"/>
   <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/libs.min.css">
   <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/socialv.css?v=4.0.0">
   <link rel="stylesheet"
