@@ -57,7 +57,7 @@
 <div class="wrapper">
     <jsp:include page="fragments/sidebar.jsp"/>
     <jsp:include page="fragments/navbar.jsp"/>
-    <%/*
+    <%
         // Controlla se il form è stato inviato
         String type = request.getParameter("type");
         String query = request.getParameter("query");
@@ -70,7 +70,7 @@
             } else if (type.equals("community")) {
                 response.sendRedirect(request.getContextPath() + "/cercaCommunity?substring=" + URLEncoder.encode(query, "UTF-8"));
             }
-        }*/
+        }
     %>
 
     <div id="content-page" class="content-page">

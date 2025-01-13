@@ -62,7 +62,7 @@
                 %>
             </div>
             <div class="iq-search-bar device-search">
-                <form action="<%=request.getContextPath() + "/ricerca.jsp"%>" class="searchbox" method="get">
+                <form action="<%=request.getContextPath() + "/homepage.jsp"%>" class="searchbox" method="get">
                     <button class="btn-link search-link" href="" type="submit"><i class="ri-search-line"></i></button>
                     <input type="text" class="text search-input" placeholder="Cerca contenuti" name="query">
                     <select class="form-select form-select-sm mb-3" name="type">
