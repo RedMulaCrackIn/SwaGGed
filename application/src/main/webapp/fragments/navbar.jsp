@@ -29,6 +29,14 @@
             cursor: pointer; /* Aggiunge il cursore tipo mano quando si passa sopra */
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        .pacifico-text {
+            font-family: 'Great Vibes', cursive !important;
+            font-size: 50px !important;
+            color: #50b5ff !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -38,7 +46,8 @@
             <div class="iq-navbar-logo d-flex justify-content-between">
                 <a href="<%=request.getContextPath()%>/homepage.jsp">
                     <img src="<%=request.getContextPath()%>/assets/images/logo.png" class="img-fluid" alt="">
-                    <span>SwaGGed</span>
+                    <span class="pacifico-text">SwaGGed</span>
+
                 </a>
                 <%
                     if (utente != null) {
