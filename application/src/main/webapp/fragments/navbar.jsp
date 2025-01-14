@@ -31,8 +31,17 @@
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'gladiola-font';
+            src: url('<%=request.getContextPath()%>/assets/gladiola-regular-regular.woff') format('woff');
+        }
         .pacifico-text {
             font-family: 'Great Vibes', cursive !important;
+            font-size: 50px !important;
+            color: #50b5ff !important;
+        }
+        .logo-font {
+            font-family: "gladiola-font", "SansSerif", cursive !important;
             font-size: 50px !important;
             color: #50b5ff !important;
         }
@@ -46,7 +55,8 @@
             <div class="iq-navbar-logo d-flex justify-content-between">
                 <a href="<%=request.getContextPath()%>/homepage.jsp">
                     <img src="<%=request.getContextPath()%>/assets/images/logo.png" class="img-fluid" alt="">
-                    <span class="pacifico-text">SwaGGed</span>
+
+                    <span class="logo-font">SwaGGed</span>
 
                 </a>
                 <%

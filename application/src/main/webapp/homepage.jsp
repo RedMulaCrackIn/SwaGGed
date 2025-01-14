@@ -294,7 +294,7 @@
                                                     <%
                                                     } else{
                                                     %>
-                                                    <i class="fa fa-thumbs-up" style="color: #777d74"></i>
+                                                        <i class="fa fa-thumbs-up" style="color: #777d74"></i>
                                                     <%
                                                         }
                                                     %>
