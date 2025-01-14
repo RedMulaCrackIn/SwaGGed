@@ -4,12 +4,14 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="swagged.model.bean.*" %>
+<%@ page import="swagged.model.dao.ApprezzaPostDAO" %>
 <%
     UtenteBean utente = (UtenteBean) session.getAttribute("utente");
     List<Bean> risultati = (List<Bean>) request.getSession().getAttribute("risultati");
 
     UtenteDAO utenteDAO = new UtenteDAO();
     UtenteBean utenteBean = null;
+    ApprezzaPostDAO apprezzaPostDAO = new ApprezzaPostDAO();
 %>
 <!doctype html>
 <html lang="en">
@@ -200,13 +202,13 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="like-data">
                                                     <%
-                                                        if (utente != null && utente.get("postApprezzati").contains(post)) {
+                                                        if (utente != null && apprezzaPostDAO.getByKey(utente.getEmail(), post.getId()) != null) {
                                                     %>
                                                     <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>">
                                                         <i class="fa fa-thumbs-up" style="color: #50b5ff"></i>
                                                     </a>
                                                     <%
-                                                    } else if (utente != null && !utente.get("postApprezzati").contains(post)) {
+                                                    } else if (utente != null) {
                                                     %>
                                                     <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>">
                                                         <i class="fa fa-thumbs-up" style="color: #777d74"></i>

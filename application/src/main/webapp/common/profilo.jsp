@@ -7,6 +7,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="swagged.model.dao.ApprezzaPostDAO" %>
 <%@ page import="swagged.model.dao.CommentoDAO" %>
+<%@ page import="swagged.model.dao.UtenteDAO" %>
 <%
     UtenteBean utente = (UtenteBean) session.getAttribute("utente");
     PostDAO postDAO = new PostDAO();
@@ -270,14 +271,14 @@
                                                             <div class="d-flex align-items-center">
                                                                 <div class="like-data">
                                                                     <%
-                                                                        if (utente != null && utente.get("postApprezzati").contains(post)) {
+                                                                        if (utente != null && apprezzaPostDAO.getByKey(utente.getEmail(), post.getId()) != null) {
                                                                     %>
                                                                     <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>">
                                                                         <i class="fa fa-thumbs-up"
                                                                            style="color: #50b5ff"></i>
                                                                     </a>
                                                                     <%
-                                                                    } else if (utente != null && !utente.get("postApprezzati").contains(post)) {
+                                                                    } else if (utente != null ) {
                                                                     %>
                                                                     <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>">
                                                                         <i class="fa fa-thumbs-up"
@@ -328,6 +329,8 @@
                                     <div class="row">
                                         <%
                                             for (PostBean post : postApprezzati) {
+                                                UtenteDAO utenteDAO = new UtenteDAO();
+                                                UtenteBean creatore = utenteDAO.getByEmail(post.getUtenteEmail());
                                         %>
                                         <div class="col-sm-12">
                                             <div class="card">
@@ -336,15 +339,15 @@
                                                         <div class="d-flex justify-content-between">
                                                             <div class="me-3">
                                                                 <img class="avatar-60 rounded-circle"
-                                                                     src="<%=request.getContextPath() + "/assets/images/pfp/" + utente.getImmagine()%>"
+                                                                     src="<%=request.getContextPath() + "/assets/images/pfp/" + creatore.getImmagine()%>"
                                                                      alt="">
                                                             </div>
                                                             <div class="w-100">
                                                                 <div class="d-flex justify-content-between">
                                                                     <div class="">
                                                                         <h5 class="mb-0 d-inline-block">
-                                                                            <a href="<%=request.getContextPath()%>/visualizzaUtente?username=<%=utente.getUsername()%>"
-                                                                               class=""><%=utente.getUsername()%>
+                                                                            <a href="<%=request.getContextPath()%>/visualizzaUtente?username=<%=creatore.getUsername()%>"
+                                                                               class=""><%=creatore.getUsername()%>
                                                                             </a>
                                                                         </h5>
                                                                         <a href="<%=request.getContextPath()%>/visualizzaCommunity?nome=<%=post.getCommunityNome()%>">
@@ -399,7 +402,7 @@
                                                     </div>
                                                     <%
                                                         }
-                                                        if (post.getImmagine() != null) {
+                                                        if (post.getImmagine() != null && !post.getImmagine().isEmpty()) {
                                                     %>
                                                     <div class="user-post">
                                                         <img src="<%=request.getContextPath() + "/assets/images/post/" + post.getImmagine()%>"
@@ -414,16 +417,16 @@
                                                                 <div class="d-flex align-items-center">
                                                                     <div class="like-data">
                                                                         <%
-                                                                            if (utente != null && utente.get("postApprezzati").contains(post)) {
+                                                                            if (utente != null && apprezzaPostDAO.getByKey(utente.getEmail(), post.getId()) != null) {
                                                                         %>
-                                                                        <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>">
+                                                                        <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>" class="liked">
                                                                             <i class="fa fa-thumbs-up"
                                                                                style="color: #50b5ff"></i>
                                                                         </a>
                                                                         <%
-                                                                        } else if (utente != null && !utente.get("postApprezzati").contains(post)) {
+                                                                        } else if (utente != null) {
                                                                         %>
-                                                                        <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>">
+                                                                        <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>" class="not-liked">
                                                                             <i class="fa fa-thumbs-up"
                                                                                style="color: #777d74"></i>
                                                                         </a>

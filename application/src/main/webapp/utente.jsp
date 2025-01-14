@@ -1,10 +1,12 @@
 <%@ page import="swagged.model.bean.UtenteBean" %>
 <%@ page import="swagged.model.bean.PostBean" %>
 <%@ page import="java.util.List" %>
+<%@ page import="swagged.model.dao.ApprezzaPostDAO" %>
 <%
     UtenteBean profilo = (UtenteBean) session.getAttribute("profilo");
     UtenteBean utente = (UtenteBean) session.getAttribute("utente");
     List<PostBean> posts = (List<PostBean>) profilo.get("postCreati");
+    ApprezzaPostDAO apprezzaPostDAO = new ApprezzaPostDAO();
 %>
 <!doctype html>
 <html lang="en">
@@ -265,14 +267,14 @@
                                                             <div class="d-flex align-items-center">
                                                                 <div class="like-data">
                                                                     <%
-                                                                        if (utente != null && utente.get("postApprezzati").contains(post)) {
+                                                                        if (utente != null && apprezzaPostDAO.getByKey(utente.getEmail(), post.getId()) != null) {
                                                                     %>
                                                                     <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>">
                                                                         <i class="fa fa-thumbs-up"
                                                                            style="color: #50b5ff"></i>
                                                                     </a>
                                                                     <%
-                                                                    } else if (utente != null && !utente.get("postApprezzati").contains(post)) {
+                                                                    } else if (utente != null) {
                                                                     %>
                                                                     <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>">
                                                                         <i class="fa fa-thumbs-up"

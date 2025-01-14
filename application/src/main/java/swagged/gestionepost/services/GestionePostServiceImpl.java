@@ -148,7 +148,6 @@ public class GestionePostServiceImpl implements GestionePostService {
 
             PostBean postBean = postDAO.getById(postId);
             postBean.rimuoviLike();
-            System.out.println("G: " + utente.get("postApprezzati"));
             utente.remove("postApprezzati", apprezzaPostBean);
             if(postDAO.update(postBean))
                 return postBean;

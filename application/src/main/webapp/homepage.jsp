@@ -7,11 +7,14 @@
 <%@ page import="swagged.model.dao.UtenteDAO" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.net.URLEncoder" %>
+<%@ page import="swagged.model.dao.ApprezzaPostDAO" %>
 <%
     UtenteBean utente = (UtenteBean) session.getAttribute("utente");
     PostDAO postDAO = new PostDAO();
     CommunityDAO communityDAO = new CommunityDAO();
     List<PostBean> posts = new ArrayList<>();
+    List<PostBean> altriPost =  new ArrayList<>();
+    ApprezzaPostDAO apprezzaPostDAO = new ApprezzaPostDAO();
     if (utente != null) {
         if (!utente.get("communityIscritto").isEmpty()) {
             List<IscrivitiCommunityBean> communities = (List<IscrivitiCommunityBean>) utente.get("communityIscritto");
@@ -20,6 +23,10 @@
                 posts.addAll(postDAO.getByCommunityNome(communityBean.getNome()));
             }
             posts.sort(Comparator.comparing(PostBean::getDataCreazione).reversed());
+            altriPost = postDAO.getByDate();
+            altriPost.removeAll(posts);
+            posts.addAll(altriPost);
+
         } else {
             posts = postDAO.getByDate();
         }
@@ -48,6 +55,14 @@
     <link rel="stylesheet"
           href="<%=request.getContextPath()%>/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
 
+    <style>
+        a.liked{
+            color: #50b5ff;
+        }
+        a.not-liked{
+            color: #777d74;
+        }
+    </style>
 </head>
 <body class="  ">
 <div id="loading">
@@ -280,21 +295,21 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="like-data">
                                                     <%
-                                                        if (utente != null && utente.get("postApprezzati").contains(post)) {
+                                                        if (utente != null && apprezzaPostDAO.getByKey(utente.getEmail(), post.getId()) != null) {
                                                     %>
-                                                    <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>">
-                                                        <i class="fa fa-thumbs-up" style="color: #50b5ff"></i>
+                                                    <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>" class="liked">
+                                                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                                                     </a>
                                                     <%
-                                                    } else if(utente != null && !utente.get("postApprezzati").contains(post)){
+                                                    } else if(utente != null ){
                                                     %>
-                                                    <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>">
-                                                        <i class="fa fa-thumbs-up" style="color: #777d74"></i>
+                                                    <a href="<%=request.getContextPath()%>/likePost?id=<%=post.getId()%>" class="not-liked">
+                                                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                                                     </a>
                                                     <%
                                                     } else{
                                                     %>
-                                                        <i class="fa fa-thumbs-up" style="color: #777d74"></i>
+                                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                                                     <%
                                                         }
                                                     %>
