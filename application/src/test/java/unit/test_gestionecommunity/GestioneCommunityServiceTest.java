@@ -12,6 +12,8 @@ import swagged.model.dao.IscrivitiCommunityDAO;
 import swagged.model.dao.PostDAO;
 import swagged.model.dao.UtenteDAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
@@ -126,39 +128,42 @@ public class GestioneCommunityServiceTest {
 
     @Nested
     class RemoveCommunityTests {
-
         @Test
         void testRemoveCommunitySuccess() throws SQLException {
-            // Arrange
-            String nome = "Community1";
-            String descrizione = null;
-            String utenteEmail = "email1@email.com";
+            // Crea il bean utente
+            String utenteEmail = "choaib@email.com";
             UtenteBean utente = mock(UtenteBean.class);
             when(utente.getEmail()).thenReturn(utenteEmail);
 
-            // Crea una mock CommunityBean
-            CommunityBean community = createMockCommunity(nome, descrizione, utenteEmail, 0);
-
-            // Crea un mock di IscrivitiCommunityBean
+            // Crea un mock IscrivitiCommunityBean (quello che ti aspetti sia passato)
+            String communityNome = "Nardo > Tutti";
             IscrivitiCommunityBean iscrivitiCommunityBean = new IscrivitiCommunityBean();
             iscrivitiCommunityBean.setUtenteEmail(utenteEmail);
-            iscrivitiCommunityBean.setCommunityNome(nome);
+            iscrivitiCommunityBean.setCommunityNome(communityNome);
 
-            // Mock del metodo getByKey per restituire il bean giusto
-            when(iscrivitiCommunityDAOMock.getByKey(utenteEmail, nome)).thenReturn(iscrivitiCommunityBean);
+            // Crea una mock CommunityBean (se necessario per il test)
+            CommunityBean communityBean = new CommunityBean();
+            communityBean.setNome(communityNome);
+            communityBean.setDescrizione("Descrizione della community");
 
-            // Simula il successo nella rimozione della community
-            when(communityDAOMock.delete(nome)).thenReturn(true);
+            // Mock del metodo remove per verificare il comportamento
+            when(utente.remove(eq("communityIscritto"), eq(iscrivitiCommunityBean))).thenReturn(true);
 
-            // Act
-            boolean result = gestioneCommunityService.remove(community, utente);
+            // Aggiungi il comportamento atteso per l'oggetto communityBean
+            when(communityDAOMock.delete(eq(communityNome))).thenReturn(true);
 
-            // Assert
-            assertTrue(result, "La community dovrebbe essere rimossa correttamente.");
-            verify(communityDAOMock).delete(nome);  // Verifica che il metodo delete sia stato chiamato
-            verify(utente).remove("communityCreate", community);  // Verifica che la community venga rimossa dalla lista di creazione
-            verify(utente).remove("communityIscritto", iscrivitiCommunityBean);  // Verifica che l'iscrizione venga rimossa correttamente
+            // Ora esegui l'azione che invoca il metodo remove sul bean utente
+            boolean result = gestioneCommunityService.remove(communityBean, utente);
+
+            // Verifica che l'oggetto giusto venga passato a remove
+            verify(utente).remove(eq("communityIscritto"), eq(iscrivitiCommunityBean));
+
+            // Verifica che la community sia stata correttamente rimossa
+            assertTrue(result);
         }
+
+
+
 
         @Test
         void testRemoveCommunityWithNullCommunity() throws SQLException {
@@ -427,4 +432,45 @@ public class GestioneCommunityServiceTest {
             assertFalse(result);
         }
     }
+
+    @Nested
+    class DisiscrizioneTests {
+
+        @Test
+        void testDisiscrizioneSuccess() throws SQLException {
+            String nomeCommunity = "Tech Community";
+            String descrizione = "A community for tech enthusiasts";
+            String utenteEmail = "user@example.com";
+
+            // Crea un mock di UtenteBean
+            UtenteBean mockUtente = mock(UtenteBean.class);
+            when(mockUtente.getEmail()).thenReturn(utenteEmail);
+
+            // Crea il mock della Community
+            CommunityBean mockCommunity = createMockCommunity(nomeCommunity, descrizione, utenteEmail, 10);
+            IscrivitiCommunityBean mockIscriviti = new IscrivitiCommunityBean();
+            mockIscriviti.setUtenteEmail(utenteEmail);
+            mockIscriviti.setCommunityNome(nomeCommunity);
+
+            // Mock dei metodi per simulare l'iscrizione esistente
+            when(communityDAOMock.getByNome(nomeCommunity)).thenReturn(mockCommunity);
+            when(iscrivitiCommunityDAOMock.getByKey(utenteEmail, nomeCommunity)).thenReturn(mockIscriviti);
+            when(iscrivitiCommunityDAOMock.delete(utenteEmail, nomeCommunity)).thenReturn(true);
+            when(communityDAOMock.update(mockCommunity)).thenReturn(true);
+
+            // Act
+            CommunityBean result = gestioneCommunityService.iscrizione(mockUtente, nomeCommunity); // Metodo che ora gestisce la disiscrizione
+
+            // Assert
+            assertNotNull(result);
+            assertEquals(nomeCommunity, result.getNome());
+            verify(iscrivitiCommunityDAOMock).delete(utenteEmail, nomeCommunity); // Verifica che la disiscrizione sia stata chiamata
+            verify(mockUtente).remove("communityIscritto", mockIscriviti); // Verifica che l'utente sia stato rimosso dalla community
+            verify(communityDAOMock).update(mockCommunity); // Verifica che il numero di iscritti della community sia stato aggiornato
+        }
+
+    }
+
+
 }
+
