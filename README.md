@@ -4,10 +4,10 @@
 ## Introduction
 
 SwaGGed is a social media platform dedicated to fans of
-rap music, from new fans to veterans of hip-hop culture. The site offers
+music, from new fans to veterans of hip-hop culture. The site offers
 rich content, including articles on emerging artists, album reviews,
 news on events and exclusive interviews. It caters to anyone who wants
-delve into the rap scene, discover new talent or simply stay
+delve into the music scene, discover new talent or simply stay
 updated on the latest trends. SwaGGed aims to serve as an authoritative
 and interactive hub where the rap community can gather,
 discuss and grow, offering a space to share opinions,
@@ -54,19 +54,17 @@ interactive experience, enabling users to comment, discuss, and engage actively.
 
 - **Liking and Disliking**: Registered users can like or dislike posts and comments to express their approval or disagreement.
 
-- **Saving Articles**: Registered users can save articles and posts for later reading.
-
-- **Creating Subcategories/Communities**: Users can propose or create subcategories or community spaces based on specific topics or themes within the rap culture.
+- **Creating Communities**: Users can propose or create community spaces based on specific topics or themes within the music culture.
 
 ### Administrator
 
 - **Comment and Discussion Moderation**: Administrators can moderate comments, ensuring discussions remain constructive and respectful. They can remove inappropriate content or users as needed.
 
-- **User Management**: Administrators have full control over registered users, including the ability to block or ban users violating the platform's guidelines.
+- **User Management**: Administrators have full control over registered users, including the ability to ban users violating the platform's guidelines.
 
 - **Content Management**: Administrators oversee all content published on the platform, with the ability to edit, approve, or remove articles and posts.
 
-- **Subcategory/Community Moderation**: Administrators can approve or manage the creation of subcategories and monitor the activities within these communities.
+- **Community Moderation**: Administrators can approve or manage the creation of communities and monitor the activities within these.
 
 
 
