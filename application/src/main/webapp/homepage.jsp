@@ -63,6 +63,28 @@
             color: #777d74;
         }
     </style>
+    <style>
+        /* Ridimensiona il riquadro dei post */
+        .card.card-block.card-stretch.card-height {
+            max-width: 500px; /* Larghezza massima del riquadro */
+            margin: 0 auto; /* Centra il riquadro nella pagina */
+            padding: 15px; /* Aggiunge spaziatura interna */
+            border: 1px solid #ddd; /* Bordo sottile */
+            border-radius: 10px; /* Bordi arrotondati */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombra leggera */
+        }
+
+        /* Immagini all'interno del riquadro */
+        .card.card-block.card-stretch.card-height img {
+            max-width: 100%; /* Adatta l'immagine alla larghezza del contenitore */
+            height: auto; /* Mantiene le proporzioni */
+            border-radius: 8px; /* Arrotonda gli angoli */
+        }
+
+    </style>
+
+
+
 </head>
 <body class="  ">
 <div id="loading">
