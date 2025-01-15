@@ -31,10 +31,8 @@ public class GestioneUtentiServiceImpl implements GestioneUtentiService {
         if (email == null || email.isEmpty() || utente == null || !utente.isAdmin())
             return false;
 
-
         if (bannato != null) {
-            utente.setBandito(true);
-
+            bannato.setBandito(true);
             return utenteDAO.update(bannato, email);
         }
         return false;

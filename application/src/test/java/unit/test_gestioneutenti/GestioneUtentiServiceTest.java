@@ -466,7 +466,10 @@ class GestioneUtentiServiceTest {
             String password = "password";
             String passwordCheck = "password";
 
-            when(utenteDAOMock.getByEmail(email)).thenReturn(new UtenteBean()); // Email già esistente
+            UtenteBean esistente = new UtenteBean();
+            esistente.setEmail("existinguser@email.com");
+
+            when(utenteDAOMock.getByEmail(email)).thenReturn(esistente); // Email già esistente
             when(utenteDAOMock.getByUsername(username)).thenReturn(null); // Username non esistente
 
             // Act
